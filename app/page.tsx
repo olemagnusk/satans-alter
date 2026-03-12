@@ -6,8 +6,8 @@ export default async function HomePage() {
   if (!session) {
     redirect("/login");
   }
-  // When authenticated, send users to the main dashboard route.
-  redirect("/concerts");
+  // When authenticated, send users to the main dashboard page.
+  redirect("/dashboard");
 }
 
 

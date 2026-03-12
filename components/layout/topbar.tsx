@@ -1,33 +1,62 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const LABEL_MAP: Record<string, string> = {
+  "": "Dashboard",
+  concerts: "Concerts",
+  statistics: "Statistics",
+  insights: "Insights",
+  login: "Login"
+};
 
 export function Topbar() {
-  const router = useRouter();
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
 
-  async function handleSignOut() {
-    const supabase = createSupabaseBrowserClient();
-    await supabase.auth.signOut();
-    router.push("/login");
-  }
+  const crumbs = [
+    { href: "/", label: "Satans Alter" },
+    ...segments.map((seg, index) => {
+      const href = "/" + segments.slice(0, index + 1).join("/");
+      const label = LABEL_MAP[seg] ?? seg.replace(/-/g, " ");
+      return { href, label };
+    })
+  ];
 
   return (
-    <header className="flex items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 py-3 backdrop-blur md:px-8">
+    <header className="flex h-16 items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 backdrop-blur md:px-10">
       <div className="flex items-center gap-2 text-sm text-coven-text-muted">
-        <span className="hidden text-xs uppercase tracking-[0.2em] text-coven-text-muted md:inline">
-          Concert Dashboard
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleSignOut}
+        <nav
+          aria-label="Breadcrumb"
+          className="hidden items-center gap-1 text-sm text-coven-text-muted md:flex"
         >
-          Sign out
-        </Button>
+          {crumbs.map((crumb, index) => {
+            const isLast = index === crumbs.length - 1;
+            return (
+              <div key={crumb.href} className="flex items-center gap-1">
+                {index > 0 && (
+                  <span className="text-[10px] text-coven-text-muted">/</span>
+                )}
+                {isLast ? (
+                  <span className="text-[13px] font-medium text-coven-text-soft">
+                    {crumb.label}
+                  </span>
+                ) : (
+                  <Link
+                    href={crumb.href}
+                    className="text-[12px] uppercase tracking-[0.18em] text-coven-text-muted hover:text-coven-text-soft"
+                  >
+                    {crumb.label}
+                  </Link>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+      </div>
+      <div className="flex items-center gap-3 text-xs text-coven-text-soft">
+        {/* Reserved for future filters / actions */}
       </div>
     </header>
   );
