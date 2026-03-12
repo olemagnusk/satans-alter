@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Black Dread";
+  src: url("/fonts/black-dread.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+._font-black-dread {
+  font-family: "Black Dread", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* ── Coven Design System tokens ─────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --coven-bg: #0A0A0B;
+  --coven-surface: #121214;
+  --coven-sidebar: #0F0F10;
+
+  /* Primary accent — stone-like, less golden */
+  --coven-primary: #B1A79A;
+  --coven-primary-hover: #A29788;
+
+  /* Danger */
+  --coven-danger: #7A1E1E;
+
+  /* Text */
+  --coven-text: #E8E0CF;
+  --coven-text-muted: #6B6B6B;
+  --coven-text-soft: #CFC6B2;
+
+  /* Borders */
+  --coven-border: rgba(177, 167, 154, 0.28);
+  --coven-border-strong: rgba(177, 167, 154, 0.42);
+
+  /* Interactive surfaces */
+  --coven-active: rgba(177, 167, 154, 0.14);
+
+  /* Chart grid */
+  --coven-grid: rgba(232, 224, 207, 0.06);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--coven-bg);
+  color: var(--coven-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--coven-primary);
+}
+a:hover {
+  color: var(--coven-primary-hover);
+}
