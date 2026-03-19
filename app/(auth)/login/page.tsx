@@ -5,14 +5,13 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6)
+  email: z.string().min(1, "Email is required"),
+  password: z.string().min(1, "Password is required")
 });
 
 type LoginValues = z.infer<typeof loginSchema>;
@@ -33,19 +32,21 @@ export default function LoginPage() {
   async function onSubmit(values: LoginValues) {
     setError(null);
     setLoading(true);
-    const supabase = createSupabaseBrowserClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password
+
+    const res = await fetch("/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: values.email, password: values.password }),
     });
+
     setLoading(false);
 
-    if (signInError) {
+    if (!res.ok) {
       setError("Invalid credentials");
       return;
     }
 
-    router.push("/");
+    window.location.href = "/dashboard";
   }
 
   const iconPositions = useMemo(
@@ -203,7 +204,7 @@ export default function LoginPage() {
             className="w-full"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Signing in..." : "Sign my dumb fucking face in"}
           </Button>
         </form>
         <p className="text-xs text-coven-text-muted">

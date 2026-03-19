@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MobileNav } from "@/components/layout/mobile-nav";
 
 const LABEL_MAP: Record<string, string> = {
   "": "Dashboard",
@@ -25,8 +26,12 @@ export function Topbar() {
   ];
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 backdrop-blur md:px-10">
-      <div className="flex items-center gap-2 text-sm text-coven-text-muted">
+    <header className="flex h-16 items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 backdrop-blur md:h-16 md:px-10">
+      {/* Mobile: logo left | Desktop: breadcrumbs */}
+      <div className="flex items-center gap-3">
+        <h1 className="_font-black-dread text-[26px] leading-none tracking-[0.08em] text-coven-text md:hidden">
+          SATANS ALTER
+        </h1>
         <nav
           aria-label="Breadcrumb"
           className="hidden items-center gap-1 text-sm text-coven-text-muted md:flex"
@@ -55,8 +60,10 @@ export function Topbar() {
           })}
         </nav>
       </div>
-      <div className="flex items-center gap-3 text-xs text-coven-text-soft">
-        {/* Reserved for future filters / actions */}
+
+      {/* Mobile: hamburger right | Desktop: reserved space */}
+      <div className="flex items-center gap-3">
+        <MobileNav />
       </div>
     </header>
   );

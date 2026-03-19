@@ -6,6 +6,8 @@ import {
 } from "@/lib/stats/concerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConcertTable } from "@/components/concerts/concert-table";
+import { DashboardActions } from "@/components/dashboard/dashboard-actions";
+import { NextConcert } from "@/components/dashboard/next-concert";
 
 export default async function DashboardPage() {
   const concerts = await listConcerts();
@@ -20,6 +22,10 @@ export default async function DashboardPage() {
       <h2 className="font-heading text-xl font-semibold tracking-tight">
         Dashboard
       </h2>
+      <DashboardActions />
+      <div className="grid gap-4 md:grid-cols-3">
+        <NextConcert />
+      </div>
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader>
@@ -61,4 +67,3 @@ export default async function DashboardPage() {
     </div>
   );
 }
-

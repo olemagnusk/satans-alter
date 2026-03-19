@@ -1,23 +1,29 @@
 import type { Concert } from "@/lib/validation/concert";
 
+/** Average of up to 3 non-null main scores for a single concert. */
+function concertAvgMain(c: Concert): number | null {
+  const vals = [c.score_main_andreas, c.score_main_dennis, c.score_main_magnus].filter(
+    (v): v is number => v != null
+  );
+  if (!vals.length) return null;
+  return vals.reduce((a, b) => a + b, 0) / vals.length;
+}
+
 export function getTotals(concerts: Concert[]) {
+  const totalAttendees = concerts.reduce(
+    (sum, c) => sum + (c.attendees?.length ?? 0),
+    0
+  );
   return {
     totalConcerts: concerts.length,
-    totalAttendees: concerts.reduce(
-      (sum, c) => sum + (c.attendees ?? 0),
-      0
-    )
+    totalAttendees
   };
 }
 
 export function getAverageMainScore(concerts: Concert[]) {
-  const scored = concerts.filter((c) => c.score_main != null);
-  if (!scored.length) return null;
-  const total = scored.reduce(
-    (sum, c) => sum + (c.score_main ?? 0),
-    0
-  );
-  return total / scored.length;
+  const avgs = concerts.map(concertAvgMain).filter((v): v is number => v != null);
+  if (!avgs.length) return null;
+  return avgs.reduce((a, b) => a + b, 0) / avgs.length;
 }
 
 export function getMostFrequentVenue(concerts: Concert[]) {
@@ -40,9 +46,11 @@ export function getMostFrequentVenue(concerts: Concert[]) {
 export function getTopBandsByScore(concerts: Concert[], limit = 5) {
   const bandScores = new Map<string, { total: number; count: number }>();
   for (const c of concerts) {
-    if (!c.band_name || c.score_main == null) continue;
+    if (!c.band_name) continue;
+    const avg = concertAvgMain(c);
+    if (avg == null) continue;
     const current = bandScores.get(c.band_name) ?? { total: 0, count: 0 };
-    current.total += c.score_main;
+    current.total += avg;
     current.count += 1;
     bandScores.set(c.band_name, current);
   }
@@ -55,4 +63,3 @@ export function getTopBandsByScore(concerts: Concert[], limit = 5) {
     .sort((a, b) => b.average - a.average)
     .slice(0, limit);
 }
-

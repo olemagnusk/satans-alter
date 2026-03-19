@@ -10,7 +10,7 @@ export default function NewConcertPage() {
           <CardTitle>New Concert Entry</CardTitle>
         </CardHeader>
         <CardContent>
-          <ConcertForm withImages />
+          <ConcertForm />
         </CardContent>
       </Card>
     </div>
