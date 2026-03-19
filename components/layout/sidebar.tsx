@@ -25,9 +25,11 @@ export function Sidebar() {
     <aside className="hidden w-64 flex-col justify-between border-r border-coven-border bg-coven-sidebar px-4 py-6 md:flex">
       <div>
         <div className="mb-6 px-1 pt-1.5">
-          <h1 className="_font-black-dread text-[34px] leading-none tracking-[0.08em] text-coven-text">
-            SATANS ALTER
-          </h1>
+          <img
+            src="/branding/satans-alter-horizontal.png"
+            alt="Satans Alter"
+            className="h-[2.8rem] w-auto"
+          />
         </div>
         <nav className="mt-4 space-y-3.5">
           {navItems.map((item) => {

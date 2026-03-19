@@ -161,9 +161,11 @@ export default function LoginPage() {
       </div>
       <div className="w-full max-w-sm space-y-6 rounded-xl border border-coven-border bg-coven-surface p-6 shadow-lg">
         <div className="space-y-1 text-center">
-          <h1 className="_font-black-dread text-[50px] leading-none tracking-[0.08em] text-coven-text">
-            SATANS ALTER
-          </h1>
+          <img
+            src="/branding/satans-alter-vertical.png"
+            alt="Satans Alter"
+            className="mx-auto h-[10.5rem] w-auto"
+          />
         </div>
         <form
           className="space-y-4"
