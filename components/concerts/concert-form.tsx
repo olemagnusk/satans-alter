@@ -17,7 +17,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const MEMBERS = ["Andreas", "Dennis", "Magnus"] as const;
+import { MEMBERS as MEMBER_LIST, displayName, toDbName } from "@/lib/members";
+import { t } from "@/lib/i18n";
+const MEMBERS = MEMBER_LIST.map((m) => m.nickname);
 
 const DEFAULT_VENUES = [
   "John Dee",
@@ -70,7 +72,7 @@ function saveStandins(standins: string[]) {
 
 function formatDateDisplay(dateStr: string): string {
   const d = new Date(dateStr + "T00:00:00");
-  return d.toLocaleDateString("en-US", {
+  return d.toLocaleDateString("nb-NO", {
     weekday: "short",
     year: "numeric",
     month: "short",
@@ -104,7 +106,7 @@ function SingleSelect({
           className="flex h-9 w-full items-center justify-between rounded-lg border border-coven-border bg-transparent px-3 text-sm text-coven-text shadow-sm transition-colors hover:border-coven-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coven-primary focus-visible:ring-offset-2 focus-visible:ring-offset-coven-bg"
         >
           <span className={value ? "text-coven-text" : "text-coven-text-muted"}>
-            {value || "Select booker…"}
+            {value || t("form.select_booker")}
           </span>
           <ChevronDown className="h-4 w-4 text-coven-text-muted" />
         </button>
@@ -157,7 +159,7 @@ function MultiSelect({
             className="flex h-9 w-full items-center justify-between rounded-lg border border-coven-border bg-transparent px-3 text-sm text-coven-text shadow-sm transition-colors hover:border-coven-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coven-primary focus-visible:ring-offset-2 focus-visible:ring-offset-coven-bg"
           >
             <span className={value.length ? "text-coven-text" : "text-coven-text-muted"}>
-              {value.length ? `${value.length} selected` : "Select attendees…"}
+              {value.length ? `${value.length} ${t("form.selected")}` : t("form.select_attendees")}
             </span>
             <ChevronDown className="h-4 w-4 text-coven-text-muted" />
           </button>
@@ -265,7 +267,7 @@ function StandinsSelect({
             className="flex h-9 w-full items-center justify-between rounded-lg border border-coven-border bg-transparent px-3 text-sm text-coven-text shadow-sm transition-colors hover:border-coven-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coven-primary focus-visible:ring-offset-2 focus-visible:ring-offset-coven-bg"
           >
             <span className={value.length ? "text-coven-text" : "text-coven-text-muted"}>
-              {value.length ? `${value.length} stand-ins` : "Select stand-ins…"}
+              {value.length ? `${value.length} ${t("form.standins_count")}` : t("form.select_standins")}
             </span>
             <ChevronDown className="h-4 w-4 text-coven-text-muted" />
           </button>
@@ -273,7 +275,7 @@ function StandinsSelect({
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] space-y-2 p-2" align="start">
           <div className="flex items-center gap-1">
             <Input
-              placeholder="Add stand-in…"
+              placeholder={t("form.add_standin")}
               value={newStandin}
               onChange={(e) => setNewStandin(e.target.value)}
               onKeyDown={(e) => {
@@ -320,7 +322,7 @@ function StandinsSelect({
             })}
             {options.length === 0 && (
               <p className="px-1 text-xs text-coven-text-muted">
-                No stand-ins yet. Add one above.
+                {t("form.no_standins")}
               </p>
             )}
           </div>
@@ -367,7 +369,7 @@ function DatePicker({
           className="flex h-9 w-full items-center justify-between rounded-lg border border-coven-border bg-transparent px-3 text-sm text-coven-text shadow-sm transition-colors hover:border-coven-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coven-primary focus-visible:ring-offset-2 focus-visible:ring-offset-coven-bg"
         >
           <span className={value ? "text-coven-text" : "text-coven-text-muted"}>
-            {value ? formatDateDisplay(value) : "Pick a date…"}
+            {value ? formatDateDisplay(value) : t("form.pick_date")}
           </span>
           <CalendarDays className="h-4 w-4 text-coven-text-muted" />
         </button>
@@ -428,7 +430,7 @@ function VenueSelect({
           className="flex h-9 w-full items-center justify-between rounded-lg border border-coven-border bg-transparent px-3 text-sm text-coven-text shadow-sm transition-colors hover:border-coven-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coven-primary focus-visible:ring-offset-2 focus-visible:ring-offset-coven-bg"
         >
           <span className={value ? "text-coven-text" : "text-coven-text-muted"}>
-            {value || "Select venue…"}
+            {value || t("form.select_venue")}
           </span>
           <ChevronDown className="h-4 w-4 text-coven-text-muted" />
         </button>
@@ -438,7 +440,7 @@ function VenueSelect({
           <div className="flex items-center gap-1 p-1">
             <Input
               autoFocus
-              placeholder="Venue name…"
+              placeholder={t("form.venue_name")}
               value={newVenue}
               onChange={(e) => setNewVenue(e.target.value)}
               onKeyDown={(e) => {
@@ -457,7 +459,7 @@ function VenueSelect({
               onClick={handleAddVenue}
               className="h-8 shrink-0 px-2 text-xs"
             >
-              Add
+              {t("form.add")}
             </Button>
           </div>
         ) : (
@@ -485,7 +487,7 @@ function VenueSelect({
                 onClick={() => setAdding(true)}
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add new venue
+                {t("form.add_new_venue")}
               </button>
             </div>
           </>
@@ -522,11 +524,17 @@ export function ConcertForm() {
     setLoading(true);
     const supabase = createSupabaseBrowserClient();
 
+    const dbValues = {
+      ...values,
+      booker: values.booker ? toDbName(values.booker) : "",
+      attendees: values.attendees?.map(toDbName) ?? [],
+    };
+
     const { error: rpcError } = await supabase.functions.invoke(
       "create-concert",
       {
         body: {
-          concert: values
+          concert: dbValues
         }
       }
     );
@@ -534,7 +542,7 @@ export function ConcertForm() {
     setLoading(false);
 
     if (rpcError) {
-      setError("Something went wrong while saving. Please try again.");
+      setError(t("form.save_error"));
       return;
     }
 
@@ -549,7 +557,7 @@ export function ConcertForm() {
     >
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-1">
-          <Label htmlFor="bandName">Band name</Label>
+          <Label htmlFor="bandName">{t("form.band_name")}</Label>
           <Input
             id="bandName"
             {...form.register("bandName")}
@@ -561,7 +569,7 @@ export function ConcertForm() {
           )}
         </div>
         <div className="space-y-1">
-          <Label>Date</Label>
+          <Label>{t("form.date")}</Label>
           <Controller
             control={form.control}
             name="date"
@@ -579,21 +587,21 @@ export function ConcertForm() {
           )}
         </div>
         <div className="space-y-1">
-          <Label htmlFor="supportBand1">Support band 1</Label>
+          <Label htmlFor="supportBand1">{t("form.support_band_1")}</Label>
           <Input
             id="supportBand1"
             {...form.register("supportBand1")}
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="supportBand2">Support band 2</Label>
+          <Label htmlFor="supportBand2">{t("form.support_band_2")}</Label>
           <Input
             id="supportBand2"
             {...form.register("supportBand2")}
           />
         </div>
         <div className="space-y-1">
-          <Label>Booker</Label>
+          <Label>{t("form.booker")}</Label>
           <Controller
             control={form.control}
             name="booker"
@@ -606,7 +614,7 @@ export function ConcertForm() {
           />
         </div>
         <div className="space-y-1">
-          <Label>Attendees</Label>
+          <Label>{t("form.attendees")}</Label>
           <Controller
             control={form.control}
             name="attendees"
@@ -619,7 +627,7 @@ export function ConcertForm() {
           />
         </div>
         <div className="space-y-1">
-          <Label>Stand-ins</Label>
+          <Label>{t("form.standins")}</Label>
           <Controller
             control={form.control}
             name="standIns"
@@ -632,7 +640,7 @@ export function ConcertForm() {
           />
         </div>
         <div className="space-y-1">
-          <Label>Venue</Label>
+          <Label>{t("form.venue")}</Label>
           <Controller
             control={form.control}
             name="venue"
@@ -646,7 +654,7 @@ export function ConcertForm() {
         </div>
       </div>
       <div className="space-y-1">
-        <Label htmlFor="note">Note</Label>
+        <Label htmlFor="note">{t("form.note")}</Label>
         <Input
           id="note"
           {...form.register("note")}
@@ -657,7 +665,7 @@ export function ConcertForm() {
         type="submit"
         disabled={loading}
       >
-        {loading ? "Saving..." : "Save concert"}
+        {loading ? t("form.saving") : t("form.save_concert")}
       </Button>
     </form>
   );

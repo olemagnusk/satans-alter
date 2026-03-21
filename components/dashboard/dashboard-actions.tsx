@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PlusCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConcertForm } from "@/components/concerts/concert-form";
+import { t } from "@/lib/i18n";
 
 export function DashboardActions() {
   const [isNewConcertOpen, setIsNewConcertOpen] = useState(false);
@@ -17,7 +18,7 @@ export function DashboardActions() {
           className="group flex w-full cursor-pointer items-center justify-between rounded-xl border border-coven-border-strong bg-coven-primary px-3 py-3 text-left shadow-sm transition hover:border-coven-primary-hover hover:bg-coven-primary-hover sm:px-4"
         >
           <div className="space-y-0.5">
-            <p className="text-sm font-medium text-coven-bg">New concert</p>
+            <p className="text-sm font-medium text-coven-bg">{t("dashboard.new_concert")}</p>
           </div>
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-coven-bg text-coven-primary transition group-hover:bg-coven-bg/90">
             <PlusCircle className="h-4 w-4" />
@@ -30,7 +31,7 @@ export function DashboardActions() {
         >
           <div className="space-y-0.5">
             <p className="text-sm font-medium text-coven-bg">
-              Add concert score
+              {t("dashboard.add_score")}
             </p>
           </div>
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-coven-bg text-coven-primary transition">
@@ -47,11 +48,11 @@ export function DashboardActions() {
               className="absolute right-4 top-4 text-coven-text-muted hover:text-coven-text"
               onClick={() => setIsNewConcertOpen(false)}
             >
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{t("dashboard.close")}</span>
               ✕
             </button>
             <h2 className="mb-4 font-heading text-lg font-semibold tracking-tight text-coven-text">
-              New concert
+              {t("dashboard.new_concert")}
             </h2>
             <ConcertForm />
           </div>

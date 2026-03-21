@@ -7,11 +7,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, LayoutDashboard, CalendarDays, BarChart3, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { t } from "@/lib/i18n";
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/concerts", label: "Concerts", icon: CalendarDays },
-  { href: "/statistics", label: "Statistics", icon: BarChart3 },
-  { href: "/insights", label: "Insights", icon: Sparkles },
+  { href: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
+  { href: "/concerts", label: t("nav.concerts"), icon: CalendarDays },
+  { href: "/statistics", label: t("nav.statistics"), icon: BarChart3 },
+  { href: "/insights", label: t("nav.insights"), icon: Sparkles },
 ];
 
 export function MobileNav() {
@@ -61,7 +62,7 @@ export function MobileNav() {
       <button
         type="button"
         className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-coven-text-muted transition hover:bg-coven-active hover:text-coven-text md:hidden"
-        aria-label="Open menu"
+        aria-label={t("mobile.open_menu")}
         onClick={() => setOpen(true)}
       >
         <Menu className="h-6 w-6" />
@@ -90,7 +91,7 @@ export function MobileNav() {
               <button
                 type="button"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-coven-text-muted transition hover:bg-coven-active hover:text-coven-text"
-                aria-label="Close menu"
+                aria-label={t("mobile.close_menu")}
                 onClick={close}
               >
                 <X className="h-5 w-5" />
@@ -137,7 +138,7 @@ export function MobileNav() {
                 className="w-full py-2.5 text-sm"
                 onClick={handleSignOut}
               >
-                Sign out
+                {t("auth.sign_out")}
               </Button>
             </div>
           </div>

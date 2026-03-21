@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { t } from "@/lib/i18n";
 
 const STORAGE_KEY = "satans-alter-next-concert-date";
 
@@ -21,7 +22,7 @@ function isDatePassed(dateStr: string): boolean {
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr + "T00:00:00");
-  return d.toLocaleDateString("en-US", {
+  return d.toLocaleDateString("nb-NO", {
     weekday: "short",
     year: "numeric",
     month: "short",
@@ -65,7 +66,7 @@ export function NextConcert() {
         <CardContent className="py-4">
           <div className="flex items-center gap-2">
             <CalendarDays className="h-5 w-5 text-coven-text-muted" />
-            <span className="text-sm text-coven-text-muted">Loading…</span>
+            <span className="text-sm text-coven-text-muted">{t("next_concert.loading")}</span>
           </div>
         </CardContent>
       </Card>
@@ -87,7 +88,7 @@ export function NextConcert() {
             <CalendarDays className="h-4 w-4 text-coven-primary" />
           </div>
           <p className="text-xs font-medium uppercase tracking-wide text-coven-text-muted">
-            Next concert
+            {t("next_concert.title")}
           </p>
         </div>
         <div className="mt-2">
@@ -97,7 +98,7 @@ export function NextConcert() {
             </p>
           ) : (
             <p className="text-sm text-coven-text-muted">
-              {expired ? "Concert has passed — pick a new date" : "No date set"}
+              {expired ? t("next_concert.passed") : t("next_concert.no_date")}
             </p>
           )}
         </div>
@@ -107,7 +108,7 @@ export function NextConcert() {
               type="button"
               className="mt-2 w-fit rounded-lg border border-coven-border px-3 py-1.5 text-xs text-coven-text-muted transition hover:border-coven-primary hover:text-coven-text"
             >
-              {hasDate ? "Change" : "Pick date"}
+              {hasDate ? t("next_concert.change") : t("next_concert.pick_date")}
             </button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">

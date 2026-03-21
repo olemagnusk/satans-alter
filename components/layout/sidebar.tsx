@@ -6,11 +6,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, CalendarDays, BarChart3, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { t } from "@/lib/i18n";
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/concerts", label: "Concerts", icon: CalendarDays },
-  { href: "/statistics", label: "Statistics", icon: BarChart3 },
-  { href: "/insights", label: "Insights", icon: Sparkles }
+  { href: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
+  { href: "/concerts", label: t("nav.concerts"), icon: CalendarDays },
+  { href: "/statistics", label: t("nav.statistics"), icon: BarChart3 },
+  { href: "/insights", label: t("nav.insights"), icon: Sparkles }
 ];
 
 export function Sidebar() {
@@ -58,7 +59,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between gap-2">
           <div className="space-y-0.5">
             <p className="text-[10px] uppercase tracking-[0.18em] text-coven-text-soft">
-              Signed in
+              {t("auth.signed_in")}
             </p>
             <p className="text-xs text-coven-text">
               sa
@@ -70,7 +71,7 @@ export function Sidebar() {
             className="h-7 px-3 text-[11px]"
             onClick={handleSignOut}
           >
-            Sign out
+            {t("auth.sign_out")}
           </Button>
         </div>
       </div>

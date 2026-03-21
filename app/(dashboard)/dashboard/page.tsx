@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConcertTable } from "@/components/concerts/concert-table";
 import { DashboardActions } from "@/components/dashboard/dashboard-actions";
 import { NextConcert } from "@/components/dashboard/next-concert";
+import { t } from "@/lib/i18n";
 
 export default async function DashboardPage() {
   const concerts = await listConcerts();
@@ -20,7 +21,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-5">
       <h2 className="font-heading text-xl font-semibold tracking-tight">
-        Dashboard
+        {t("dashboard.title")}
       </h2>
       <DashboardActions />
       <div className="grid gap-4 md:grid-cols-3">
@@ -29,7 +30,7 @@ export default async function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Total concerts</CardTitle>
+            <CardTitle>{t("dashboard.total_concerts")}</CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-semibold">
             {totals.totalConcerts}
@@ -37,7 +38,7 @@ export default async function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Average main score</CardTitle>
+            <CardTitle>{t("dashboard.avg_main_score")}</CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-semibold">
             {averageMain != null ? averageMain.toFixed(1) : "–"}
@@ -45,20 +46,20 @@ export default async function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Most frequent venue</CardTitle>
+            <CardTitle>{t("dashboard.most_frequent_venue")}</CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-coven-text-soft">
-            {topVenue ?? "No data yet"}
+            {topVenue ?? t("dashboard.no_data")}
           </CardContent>
         </Card>
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Recent concerts</CardTitle>
+          <CardTitle>{t("dashboard.recent_concerts")}</CardTitle>
         </CardHeader>
         <CardContent className="text-sm text-coven-text-soft">
           {recent.length === 0 ? (
-            <p>No concerts yet. Use the New Concert page to add your first.</p>
+            <p>{t("dashboard.no_concerts_yet")}</p>
           ) : (
             <ConcertTable concerts={recent} />
           )}

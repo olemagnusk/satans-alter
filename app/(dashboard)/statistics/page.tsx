@@ -5,6 +5,7 @@ import {
   getTopBandsByScore
 } from "@/lib/stats/concerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { t } from "@/lib/i18n";
 
 export default async function StatisticsPage() {
   const concerts = await listConcerts();
@@ -14,11 +15,11 @@ export default async function StatisticsPage() {
 
   return (
     <div className="space-y-4">
-      <h2 className="font-heading text-lg font-semibold tracking-tight">Statistics</h2>
+      <h2 className="font-heading text-lg font-semibold tracking-tight">{t("stats.title")}</h2>
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Total concerts</CardTitle>
+            <CardTitle>{t("stats.total_concerts")}</CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-semibold">
             {totals.totalConcerts}
@@ -26,7 +27,7 @@ export default async function StatisticsPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Total attendees</CardTitle>
+            <CardTitle>{t("stats.total_attendees")}</CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-semibold">
             {totals.totalAttendees}
@@ -34,7 +35,7 @@ export default async function StatisticsPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Average main score</CardTitle>
+            <CardTitle>{t("stats.avg_main_score")}</CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-semibold">
             {avgMain != null ? avgMain.toFixed(1) : "–"}
@@ -43,11 +44,11 @@ export default async function StatisticsPage() {
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Top bands by average score</CardTitle>
+          <CardTitle>{t("stats.top_bands")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-coven-text-soft">
           {topBands.length === 0 ? (
-            <p>No scored concerts yet.</p>
+            <p>{t("stats.no_scored")}</p>
           ) : (
             <ul className="space-y-1">
               {topBands.map((band) => (

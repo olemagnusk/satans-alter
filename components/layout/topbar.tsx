@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { t } from "@/lib/i18n";
 
 const LABEL_MAP: Record<string, string> = {
-  "": "Dashboard",
-  concerts: "Concerts",
-  statistics: "Statistics",
-  insights: "Insights",
-  login: "Login"
+  "": t("nav.dashboard"),
+  concerts: t("nav.concerts"),
+  statistics: t("nav.statistics"),
+  insights: t("nav.insights"),
+  login: t("nav.login"),
 };
 
 export function Topbar() {

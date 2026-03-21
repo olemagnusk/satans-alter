@@ -8,10 +8,11 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { t } from "@/lib/i18n";
 
 const loginSchema = z.object({
-  email: z.string().min(1, "Email is required"),
-  password: z.string().min(1, "Password is required")
+  email: z.string().min(1, t("login.email_required")),
+  password: z.string().min(1, t("login.password_required"))
 });
 
 type LoginValues = z.infer<typeof loginSchema>;
@@ -42,7 +43,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (!res.ok) {
-      setError("Invalid credentials");
+      setError(t("login.invalid_credentials"));
       return;
     }
 
@@ -173,7 +174,7 @@ export default function LoginPage() {
           noValidate
         >
           <div className="space-y-1">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("login.email_label")}</Label>
             <Input
               id="email"
               type="email"
@@ -187,7 +188,7 @@ export default function LoginPage() {
             )}
           </div>
           <div className="space-y-1">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("login.password_label")}</Label>
             <Input
               id="password"
               type="password"
@@ -206,11 +207,11 @@ export default function LoginPage() {
             className="w-full"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign my dumb fucking face in"}
+            {loading ? t("login.signing_in") : t("login.sign_in_button")}
           </Button>
         </form>
         <p className="text-xs text-coven-text-muted">
-          Sign in with the shared credentials.
+          {t("login.hint")}
         </p>
       </div>
     </main>

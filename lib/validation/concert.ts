@@ -1,13 +1,14 @@
 import { z } from "zod";
+import { t } from "@/lib/i18n";
 
 export const concertInputSchema = z.object({
-  bandName: z.string().min(1, "Band name is required"),
+  bandName: z.string().min(1, t("validation.band_required")),
   supportBand1: z.string().optional().or(z.literal("")),
   supportBand2: z.string().optional().or(z.literal("")),
   booker: z.string().optional().or(z.literal("")),
   attendees: z.array(z.string()).optional(),
   standIns: z.array(z.string()).optional(),
-  date: z.string().min(1, "Date is required"),
+  date: z.string().min(1, t("validation.date_required")),
   venue: z.string().optional().or(z.literal("")),
   note: z.string().optional().or(z.literal(""))
 });
