@@ -526,6 +526,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     sortColumn={sortColumn}
                     sortDirection={sortDirection}
                     onSort={handleSort}
+                    className={col.key === "band" ? "sticky left-0 z-10 bg-coven-surface" : undefined}
                   />
                 ))}
               </TableRow>
@@ -549,12 +550,12 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                       </TableCell>
                     )}
                     {isVisible("band") && (
-                      <TableCell className="max-w-[120px] truncate text-xs sm:max-w-none sm:text-sm">
+                      <TableCell className="sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface text-xs font-medium sm:max-w-none sm:text-sm">
                         {concert.band_name}
                       </TableCell>
                     )}
                     {isVisible("support") && (
-                      <TableCell className="whitespace-nowrap">
+                      <TableCell className="whitespace-nowrap text-xs sm:text-sm">
                         {[concert.support_band_1, concert.support_band_2]
                           .filter(Boolean)
                           .join(", ") || "–"}

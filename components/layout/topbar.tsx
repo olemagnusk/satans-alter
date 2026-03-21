@@ -28,7 +28,7 @@ export function Topbar() {
   ];
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 backdrop-blur md:h-16 md:px-10">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 backdrop-blur md:h-16 md:px-10">
       {/* Mobile: logo left | Desktop: breadcrumbs */}
       <div className="flex items-center gap-3">
         <Image

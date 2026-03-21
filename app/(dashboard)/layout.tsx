@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-coven-bg text-coven-text">
       <Sidebar />
-      <div className="flex min-h-screen min-w-0 flex-1 flex-col overflow-hidden">
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col">
         <Topbar />
         <main className="flex-1 overflow-x-hidden px-4 py-4 md:px-8 md:py-6">{children}</main>
       </div>
