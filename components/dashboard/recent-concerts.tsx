@@ -111,13 +111,13 @@ export function RecentConcerts({ concerts, cta }: { concerts: Concert[]; cta?: R
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableHeadCell>{t("col.date")}</TableHeadCell>
-                  <TableHeadCell className={`sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}`}>{t("col.band")}</TableHeadCell>
-                  <TableHeadCell>{t("col.support")}</TableHeadCell>
-                  <TableHeadCell>{t("col.venue")}</TableHeadCell>
-                  <TableHeadCell>{t("col.booker")}</TableHeadCell>
-                  <TableHeadCell>{t("col.main")}</TableHeadCell>
-                  <TableHeadCell>{t("col.support_score")}</TableHeadCell>
+                  <TableHeadCell className="normal-case">{t("col.date")}</TableHeadCell>
+                  <TableHeadCell className={`normal-case sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}`}>{t("col.band")}</TableHeadCell>
+                  <TableHeadCell className="normal-case">{t("col.support")}</TableHeadCell>
+                  <TableHeadCell className="normal-case">{t("col.venue")}</TableHeadCell>
+                  <TableHeadCell className="normal-case">{t("col.booker")}</TableHeadCell>
+                  <TableHeadCell className="normal-case">{t("col.main")}</TableHeadCell>
+                  <TableHeadCell className="normal-case">{t("col.support_score")}</TableHeadCell>
                 </TableRow>
               </TableHead>
               <TableBody>
