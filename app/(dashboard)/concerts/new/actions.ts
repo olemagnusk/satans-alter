@@ -8,6 +8,9 @@ export async function createConcertAction(input: ConcertInput) {
   const parsed = concertInputSchema.parse(input);
   await createConcert(parsed, "sa");
   revalidatePath("/concerts");
+  revalidatePath("/dashboard");
+  revalidatePath("/statistics");
+  revalidatePath("/insights");
   return { success: true };
 }
 
