@@ -19,7 +19,7 @@ export function Topbar() {
   const segments = pathname.split("/").filter(Boolean);
 
   const crumbs = [
-    { href: "/", label: "Satans Alter" },
+    { href: "/dashboard", label: "Satans Alter" },
     ...segments.map((seg, index) => {
       const href = "/" + segments.slice(0, index + 1).join("/");
       const label = LABEL_MAP[seg] ?? seg.replace(/-/g, " ");
@@ -31,14 +31,16 @@ export function Topbar() {
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 backdrop-blur md:h-16 md:px-10">
       {/* Mobile: logo left | Desktop: breadcrumbs */}
       <div className="flex items-center gap-3">
-        <Image
-          src="/branding/satans-alter-horizontal.png"
-          alt="Satans Alter"
-          width={1024}
-          height={202}
-          className="h-7 w-auto md:hidden"
-          priority
-        />
+        <Link href="/dashboard" className="md:hidden">
+          <Image
+            src="/branding/satans-alter-horizontal.png"
+            alt="Satans Alter"
+            width={1024}
+            height={202}
+            className="h-7 w-auto"
+            priority
+          />
+        </Link>
         <nav
           aria-label="Breadcrumb"
           className="hidden items-center gap-1 text-sm text-coven-text-muted md:flex"

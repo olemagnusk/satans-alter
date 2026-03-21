@@ -13,8 +13,20 @@ export const concertInputSchema = z.object({
   note: z.string().optional().or(z.literal(""))
 });
 
+const scoreField = z.number().int().min(1).max(6).nullable().optional();
+
+export const concertUpdateSchema = concertInputSchema.extend({
+  scoreMainAndreas: scoreField,
+  scoreMainDennis: scoreField,
+  scoreMainMagnus: scoreField,
+  scoreSupportAndreas: scoreField,
+  scoreSupportDennis: scoreField,
+  scoreSupportMagnus: scoreField,
+});
+
 export type ConcertFormValues = z.input<typeof concertInputSchema>;
 export type ConcertInput = z.output<typeof concertInputSchema>;
+export type ConcertUpdateInput = z.output<typeof concertUpdateSchema>;
 
 export type Concert = {
   id: string;
@@ -37,4 +49,3 @@ export type Concert = {
   images: { storagePath: string; publicUrl: string }[] | null;
   created_by: string | null;
 };
-

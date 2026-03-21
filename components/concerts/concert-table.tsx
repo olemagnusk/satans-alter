@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { Search, X, ChevronUp, ChevronDown, List, Rows3, SlidersHorizontal, Check } from "lucide-react";
 import {
   Table,
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/popover";
 import { MEMBERS, displayName } from "@/lib/members";
 import { t } from "@/lib/i18n";
+import { EditConcertDialog } from "@/components/concerts/edit-concert-dialog";
 import type { Concert } from "@/lib/validation/concert";
 
 type ConcertTableProps = {
@@ -220,12 +221,28 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
   const [venueFilter, setVenueFilter] = useState("");
   const [bandFilter, setBandFilter] = useState("");
   const [bookerFilter, setBookerFilter] = useState("");
+  const [yearFilter, setYearFilter] = useState("");
   const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [expanded, setExpanded] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState<Set<ColumnKey>>(
     () => new Set(DEFAULT_VISIBLE)
   );
+  const [isScrolled, setIsScrolled] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = useCallback(() => {
+    if (scrollRef.current) {
+      setIsScrolled(scrollRef.current.scrollLeft > 0);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   function toggleColumn(key: ColumnKey) {
     setVisibleColumns((prev) => {
@@ -264,6 +281,14 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
     [concerts]
   );
 
+  const years = useMemo(
+    () =>
+      Array.from(
+        new Set(concerts.map((c) => c.date.slice(0, 4)))
+      ).sort((a, b) => b.localeCompare(a)),
+    [concerts]
+  );
+
   function handleSort(col: SortColumn) {
     if (sortColumn === col) {
       setSortDirection((d) => (d === "asc" ? "desc" : "asc"));
@@ -280,6 +305,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
       if (bandFilter && c.band_name !== bandFilter) return false;
       if (bookerFilter && displayName(c.booker ?? "") !== bookerFilter)
         return false;
+      if (yearFilter && !c.date.startsWith(yearFilter)) return false;
       if (q) {
         const haystack = [
           c.band_name,
@@ -297,7 +323,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
       }
       return true;
     });
-  }, [concerts, search, venueFilter, bandFilter, bookerFilter]);
+  }, [concerts, search, venueFilter, bandFilter, bookerFilter, yearFilter]);
 
   const sorted = useMemo(() => {
     if (!sortColumn) return filtered;
@@ -372,7 +398,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
     );
   }
 
-  const hasActiveFilters = search || venueFilter || bandFilter || bookerFilter;
+  const hasActiveFilters = search || venueFilter || bandFilter || bookerFilter || yearFilter;
 
   const memberScores = (concert: Concert, type: "main" | "support") => {
     const prefix = type === "main" ? "score_main_" : "score_support_";
@@ -384,6 +410,10 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
         | null,
     }));
   };
+
+  const stickyBandShadow = isScrolled
+    ? "after:pointer-events-none after:absolute after:right-0 after:top-0 after:h-full after:w-2 after:translate-x-full after:bg-gradient-to-r after:from-coven-bg/40 after:to-transparent after:content-['']"
+    : "";
 
   return (
     <div className="space-y-3">
@@ -488,6 +518,12 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
             options={bookers}
             onChange={setBookerFilter}
           />
+          <FilterSelect
+            label={t("col.year")}
+            value={yearFilter}
+            options={years}
+            onChange={setYearFilter}
+          />
           {hasActiveFilters && (
             <button
               type="button"
@@ -497,6 +533,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                 setVenueFilter("");
                 setBandFilter("");
                 setBookerFilter("");
+                setYearFilter("");
               }}
             >
               {t("table.clear_all")}
@@ -513,7 +550,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
       )}
 
       {/* Table */}
-      <div className="-mx-4 overflow-x-auto sm:mx-0">
+      <div ref={scrollRef} className="-mx-4 overflow-x-auto sm:mx-0">
         <div className="inline-block min-w-full align-middle">
           <Table>
             <TableHead>
@@ -526,9 +563,10 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     sortColumn={sortColumn}
                     sortDirection={sortDirection}
                     onSort={handleSort}
-                    className={col.key === "band" ? "sticky left-0 z-10 bg-coven-surface after:pointer-events-none after:absolute after:right-0 after:top-0 after:h-full after:w-4 after:translate-x-full after:bg-gradient-to-r after:from-black/20 after:to-transparent after:content-['']" : undefined}
+                    className={col.key === "band" ? `sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}` : undefined}
                   />
                 ))}
+                <TableHeadCell className="w-8" />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -550,7 +588,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                       </TableCell>
                     )}
                     {isVisible("band") && (
-                      <TableCell className="sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface text-xs font-medium after:pointer-events-none after:absolute after:right-0 after:top-0 after:h-full after:w-4 after:translate-x-full after:bg-gradient-to-r after:from-black/20 after:to-transparent after:content-[''] sm:max-w-none sm:text-sm">
+                      <TableCell className={`sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface text-xs font-semibold sm:max-w-none sm:text-sm ${stickyBandShadow}`}>
                         {concert.band_name}
                       </TableCell>
                     )}
@@ -628,6 +666,9 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                         {concert.note || "–"}
                       </TableCell>
                     )}
+                    <TableCell className="w-8 px-1">
+                      <EditConcertDialog concert={concert} />
+                    </TableCell>
                   </TableRow>
                 ))
               )}

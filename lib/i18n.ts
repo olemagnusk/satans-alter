@@ -75,11 +75,12 @@ const nb: Record<string, string> = {
   "col.support": "Oppvarming",
   "col.venue": "Spillested",
   "col.booker": "Booker",
-  "col.main": "Hoved (P/D/K)",
-  "col.support_score": "Oppv. (P/D/K)",
+  "col.main": "Main score",
+  "col.support_score": "Support score",
   "col.attendees": "Deltakere",
   "col.standins": "Vikarer",
   "col.note": "Notat",
+  "col.year": "År",
 
   // Concert form
   "form.band_name": "Bandnavn",
@@ -106,6 +107,12 @@ const nb: Record<string, string> = {
   "form.saving": "Lagrer...",
   "form.save_concert": "Lagre konsert",
   "form.save_error": "Noe gikk galt under lagring. Prøv igjen.",
+  "form.edit_concert": "Rediger konsert",
+  "form.update_concert": "Oppdater konsert",
+  "form.updating": "Oppdaterer...",
+  "form.main_scores": "Hovedscore",
+  "form.support_scores": "Oppvarmingsscore",
+  "edit.action": "Rediger",
 
   // Validation
   "validation.band_required": "Bandnavn er påkrevd",
