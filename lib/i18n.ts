@@ -33,10 +33,13 @@ const nb: Record<string, string> = {
   // Dashboard page
   "dashboard.title": "Dashboard",
   "dashboard.total_concerts": "Totalt antall konserter",
-  "dashboard.avg_main_score": "Gjennomsnittlig hovedscore",
-  "dashboard.most_frequent_venue": "Mest besøkte spillested",
+  "dashboard.avg_main_score": "Gjennomsnitt score hovedband",
+  "dashboard.avg_support_score": "Gjennomsnitt score oppvarmingsband",
+  "dashboard.top_venues": "Topp tre konsertscener",
+  "dashboard.visits": "besøk",
   "dashboard.no_data": "Ingen data ennå",
-  "dashboard.recent_concerts": "Siste konserter",
+  "dashboard.recent_concerts": "Siste 5 konserter",
+  "dashboard.see_all_concerts": "Se alle konserter",
   "dashboard.no_concerts_yet": "Ingen konserter ennå. Bruk Ny konsert-siden for å legge til den første.",
   "dashboard.new_concert": "Ny konsert",
   "dashboard.add_score": "Legg til score",
@@ -49,6 +52,7 @@ const nb: Record<string, string> = {
   "next_concert.no_date": "Ingen dato satt",
   "next_concert.change": "Endre",
   "next_concert.pick_date": "Velg dato",
+  "next_concert.today_message": "Det er Satans dag 🤟🍻🔥🎸",
 
   // Concerts page
   "concerts.title": "Konserter",

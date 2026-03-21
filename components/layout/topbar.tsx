@@ -48,7 +48,7 @@ export function Topbar() {
           {crumbs.map((crumb, index) => {
             const isLast = index === crumbs.length - 1;
             return (
-              <div key={crumb.href} className="flex items-center gap-1">
+              <div key={`${index}-${crumb.href}`} className="flex items-center gap-1">
                 {index > 0 && (
                   <span className="text-[10px] text-coven-text-muted">/</span>
                 )}

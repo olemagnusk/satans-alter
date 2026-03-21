@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CalendarDays } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -10,8 +10,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { t } from "@/lib/i18n";
+import { setNextConcertDateAction } from "@/app/(dashboard)/dashboard/actions";
 
-const STORAGE_KEY = "satans-alter-next-concert-date";
+function isToday(dateStr: string): boolean {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, "0");
+  const d = String(today.getDate()).padStart(2, "0");
+  return dateStr === `${y}-${m}-${d}`;
+}
 
 function isDatePassed(dateStr: string): boolean {
   const today = new Date();
@@ -37,43 +44,21 @@ function toDateString(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
-export function NextConcert() {
-  const [date, setDate] = useState<string | null>(null);
+export function NextConcert({ initialDate }: { initialDate: string | null }) {
+  const validInitial = initialDate && !isDatePassed(initialDate) ? initialDate : null;
+  const [date, setDate] = useState<string | null>(validInitial);
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && !isDatePassed(stored)) {
-      setDate(stored);
-    } else {
-      setDate(null);
-    }
-  }, []);
-
-  function handleSelect(selected: Date | undefined) {
+  async function handleSelect(selected: Date | undefined) {
     if (!selected) return;
     const value = toDateString(selected);
-    localStorage.setItem(STORAGE_KEY, value);
     setDate(value);
     setOpen(false);
-  }
-
-  if (!mounted) {
-    return (
-      <Card className="w-full">
-        <CardContent className="py-4">
-          <div className="flex items-center gap-2">
-            <CalendarDays className="h-5 w-5 text-coven-text-muted" />
-            <span className="text-sm text-coven-text-muted">{t("next_concert.loading")}</span>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    await setNextConcertDateAction(value);
   }
 
   const expired = date !== null && isDatePassed(date);
+  const todayIsTheDay = date !== null && isToday(date);
   const hasDate = date !== null && !expired;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -82,45 +67,44 @@ export function NextConcert() {
 
   return (
     <Card className="w-full">
-      <CardContent className="py-4">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-coven-primary/10">
-            <CalendarDays className="h-4 w-4 text-coven-primary" />
-          </div>
-          <p className="text-xs font-medium uppercase tracking-wide text-coven-text-muted">
-            {t("next_concert.title")}
+      <CardHeader>
+        <CardTitle>{t("next_concert.title")}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {todayIsTheDay ? (
+          <p className="text-lg font-bold text-coven-text">
+            {t("next_concert.today_message")}
           </p>
+        ) : hasDate ? (
+          <p className="text-2xl font-semibold text-coven-text">
+            {formatDate(date)}
+          </p>
+        ) : (
+          <p className="text-sm text-coven-text-muted">
+            {expired ? t("next_concert.passed") : t("next_concert.no_date")}
+          </p>
+        )}
+        <div className="mt-2 flex justify-end">
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <button
+                type="button"
+                className="w-fit rounded-lg border border-coven-border px-3 py-1.5 text-xs text-coven-text-muted transition hover:border-coven-primary hover:text-coven-text"
+              >
+                {hasDate ? t("next_concert.change") : t("next_concert.pick_date")}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="end">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={handleSelect}
+                disabled={{ before: today }}
+                defaultMonth={selectedDate ?? today}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
-        <div className="mt-2">
-          {hasDate ? (
-            <p className="text-sm font-semibold text-coven-text">
-              {formatDate(date)}
-            </p>
-          ) : (
-            <p className="text-sm text-coven-text-muted">
-              {expired ? t("next_concert.passed") : t("next_concert.no_date")}
-            </p>
-          )}
-        </div>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <button
-              type="button"
-              className="mt-2 w-fit rounded-lg border border-coven-border px-3 py-1.5 text-xs text-coven-text-muted transition hover:border-coven-primary hover:text-coven-text"
-            >
-              {hasDate ? t("next_concert.change") : t("next_concert.pick_date")}
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleSelect}
-              disabled={{ before: today }}
-              defaultMonth={selectedDate ?? today}
-            />
-          </PopoverContent>
-        </Popover>
       </CardContent>
     </Card>
   );

@@ -229,6 +229,16 @@ async function main() {
   `;
   console.log("Table ready.");
 
+  console.log("Creating app_settings table…");
+  await sql`
+    CREATE TABLE IF NOT EXISTS app_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `;
+  console.log("Settings table ready.");
+
   console.log("Clearing existing data…");
   await sql`DELETE FROM concerts`;
 
