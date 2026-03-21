@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -26,10 +27,13 @@ export function Sidebar() {
     <aside className="hidden w-64 flex-col justify-between border-r border-coven-border bg-coven-sidebar px-4 py-6 md:flex">
       <div>
         <div className="mb-6 px-1 pt-1.5">
-          <img
+          <Image
             src="/branding/satans-alter-horizontal.png"
             alt="Satans Alter"
+            width={1024}
+            height={202}
             className="h-[2.8rem] w-auto"
+            priority
           />
         </div>
         <nav className="mt-4 space-y-3.5">
