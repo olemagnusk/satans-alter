@@ -43,7 +43,7 @@ function ScoreDisplay({
   }
 
   return (
-    <span className="tabular-nums text-xs">
+    <span className="whitespace-nowrap tabular-nums text-xs">
       {scores
         .map((s) => `${s.initial}:${s.value != null ? s.value : "–"}`)
         .join("  ")}
