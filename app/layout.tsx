@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Concert Dashboard",
+  title: "Satans Alter",
   description: "Internal concert tracking dashboard"
 };
 
