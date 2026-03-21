@@ -14,6 +14,8 @@ export const MEMBER_NICKNAMES = MEMBERS.map((m) => m.nickname);
 
 const ALIASES: Record<string, string> = {
   Pils: "Pilsen",
+  Djen: "Djen",
+  Krem: "Krem",
 };
 
 export function displayName(dbName: string): string {
