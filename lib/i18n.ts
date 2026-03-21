@@ -117,6 +117,15 @@ const nb: Record<string, string> = {
   "form.main_scores": "Hovedscore",
   "form.support_scores": "Oppvarmingsscore",
   "edit.action": "Rediger",
+  "delete.action": "Slett",
+  "delete.title": "Slett konsert",
+  "delete.confirm_text": "Skriv bandnavnet for å bekrefte sletting:",
+  "delete.placeholder": "Bandnavn...",
+  "delete.button": "Slett permanent",
+  "delete.deleting": "Sletter...",
+  "delete.cancel": "Avbryt",
+  "note.title": "Kommentar",
+  "note.close": "Lukk",
 
   // Validation
   "validation.band_required": "Bandnavn er påkrevd",

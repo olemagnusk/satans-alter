@@ -59,7 +59,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
       <Card>
-        <CardHeader>
+        <CardHeader className="mb-4">
           <CardTitle>{t("dashboard.top_venues")}</CardTitle>
         </CardHeader>
         <CardContent>
@@ -84,26 +84,17 @@ export default async function DashboardPage() {
           )}
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("dashboard.recent_concerts")}</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-coven-text-soft">
-          {recent.length === 0 ? (
-            <p>{t("dashboard.no_concerts_yet")}</p>
-          ) : (
-            <RecentConcerts concerts={recent} />
-          )}
-          <div className="mt-4">
-            <Link
-              href="/concerts"
-              className="inline-flex rounded-xl bg-coven-primary px-4 py-2.5 text-xs font-medium text-coven-bg transition hover:bg-coven-primary-hover"
-            >
-              {t("dashboard.see_all_concerts")}
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+      <RecentConcerts
+        concerts={recent}
+        cta={
+          <Link
+            href="/concerts"
+            className="inline-flex rounded-xl bg-coven-primary px-4 py-2.5 text-xs font-medium text-coven-bg transition hover:bg-coven-primary-hover active:text-coven-bg"
+          >
+            {t("dashboard.see_all_concerts")}
+          </Link>
+        }
+      />
     </div>
   );
 }

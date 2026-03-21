@@ -10,6 +10,7 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { MEMBERS, displayName } from "@/lib/members";
 import { t } from "@/lib/i18n";
 import type { Concert } from "@/lib/validation/concert";
@@ -50,7 +51,7 @@ function ScoreDisplay({
   );
 }
 
-export function RecentConcerts({ concerts }: { concerts: Concert[] }) {
+export function RecentConcerts({ concerts, cta }: { concerts: Concert[]; cta?: React.ReactNode }) {
   const [expanded, setExpanded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -74,8 +75,9 @@ export function RecentConcerts({ concerts }: { concerts: Concert[] }) {
     : "";
 
   return (
-    <div className="space-y-3">
-      <div className="flex justify-end">
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>{t("dashboard.recent_concerts")}</CardTitle>
         <div className="flex shrink-0 items-center gap-1 rounded-lg border border-coven-border p-0.5">
           <button
             type="button"
@@ -102,59 +104,66 @@ export function RecentConcerts({ concerts }: { concerts: Concert[] }) {
             <Rows3 className="h-4 w-4" />
           </button>
         </div>
-      </div>
-      <div onScroll={handleScroll} className="-mx-4 overflow-x-auto sm:mx-0">
-        <div className="inline-block min-w-full align-middle">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeadCell>{t("col.date")}</TableHeadCell>
-                <TableHeadCell className={`sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}`}>{t("col.band")}</TableHeadCell>
-                <TableHeadCell>{t("col.support")}</TableHeadCell>
-                <TableHeadCell>{t("col.venue")}</TableHeadCell>
-                <TableHeadCell>{t("col.booker")}</TableHeadCell>
-                <TableHeadCell>{t("col.main")}</TableHeadCell>
-                <TableHeadCell>{t("col.support_score")}</TableHeadCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {concerts.map((concert) => (
-                <TableRow key={concert.id}>
-                  <TableCell className="whitespace-nowrap text-xs sm:text-sm">
-                    {formatDate(concert.date)}
-                  </TableCell>
-                  <TableCell className={`sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface group-hover:bg-coven-surface-hover text-xs font-semibold sm:max-w-none sm:text-sm transition-colors ${stickyBandShadow}`}>
-                    {concert.band_name}
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap text-xs sm:text-sm">
-                    {[concert.support_band_1, concert.support_band_2]
-                      .filter(Boolean)
-                      .join(", ") || "–"}
-                  </TableCell>
-                  <TableCell className="max-w-[100px] truncate text-xs sm:max-w-none sm:whitespace-nowrap sm:text-sm">
-                    {concert.venue || "–"}
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap">
-                    {concert.booker ? displayName(concert.booker) : "–"}
-                  </TableCell>
-                  <TableCell>
-                    <ScoreDisplay
-                      scores={memberScores(concert, "main")}
-                      expanded={expanded}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <ScoreDisplay
-                      scores={memberScores(concert, "support")}
-                      expanded={expanded}
-                    />
-                  </TableCell>
+      </CardHeader>
+      <CardContent className="text-sm text-coven-text-soft">
+        <div onScroll={handleScroll} className="-mx-4 overflow-x-auto sm:mx-0">
+          <div className="inline-block min-w-full align-middle">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableHeadCell>{t("col.date")}</TableHeadCell>
+                  <TableHeadCell className={`sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}`}>{t("col.band")}</TableHeadCell>
+                  <TableHeadCell>{t("col.support")}</TableHeadCell>
+                  <TableHeadCell>{t("col.venue")}</TableHeadCell>
+                  <TableHeadCell>{t("col.booker")}</TableHeadCell>
+                  <TableHeadCell>{t("col.main")}</TableHeadCell>
+                  <TableHeadCell>{t("col.support_score")}</TableHeadCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {concerts.map((concert) => (
+                  <TableRow key={concert.id}>
+                    <TableCell className="whitespace-nowrap text-xs sm:text-sm">
+                      {formatDate(concert.date)}
+                    </TableCell>
+                    <TableCell className={`sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface group-hover:bg-coven-surface-hover text-xs font-semibold sm:max-w-none sm:text-sm transition-colors ${stickyBandShadow}`}>
+                      {concert.band_name}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap text-xs sm:text-sm">
+                      {[concert.support_band_1, concert.support_band_2]
+                        .filter(Boolean)
+                        .join(", ") || "–"}
+                    </TableCell>
+                    <TableCell className="max-w-[100px] truncate text-xs sm:max-w-none sm:whitespace-nowrap sm:text-sm">
+                      {concert.venue || "–"}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {concert.booker ? (
+                        <span className="inline-flex rounded-full bg-coven-primary/10 px-2 py-0.5 text-xs font-medium text-coven-primary">
+                          {displayName(concert.booker)}
+                        </span>
+                      ) : "–"}
+                    </TableCell>
+                    <TableCell>
+                      <ScoreDisplay
+                        scores={memberScores(concert, "main")}
+                        expanded={expanded}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <ScoreDisplay
+                        scores={memberScores(concert, "support")}
+                        expanded={expanded}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
-    </div>
+        {cta && <div className="mt-4">{cta}</div>}
+      </CardContent>
+    </Card>
   );
 }

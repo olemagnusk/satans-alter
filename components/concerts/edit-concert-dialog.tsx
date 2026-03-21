@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MEMBERS as MEMBER_LIST, displayName, toDbName } from "@/lib/members";
-import { updateConcertAction } from "@/app/(dashboard)/concerts/new/actions";
+import { updateConcertAction, deleteConcertAction } from "@/app/(dashboard)/concerts/new/actions";
 import { t } from "@/lib/i18n";
 import type { Concert } from "@/lib/validation/concert";
 
@@ -64,6 +64,11 @@ export function EditConcertDialog({ concert }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Delete state
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   // Form state
   const [bandName, setBandName] = useState(concert.band_name);
@@ -137,6 +142,20 @@ export function EditConcertDialog({ concert }: Props) {
     }
   }
 
+  async function handleDelete() {
+    if (deleteConfirm !== concert.band_name) return;
+    setDeleteLoading(true);
+    try {
+      await deleteConcertAction(concert.id);
+      setDeleteOpen(false);
+      router.refresh();
+    } catch {
+      setError(t("form.save_error"));
+    } finally {
+      setDeleteLoading(false);
+    }
+  }
+
   const NICKNAMES = MEMBER_LIST.map((m) => m.nickname);
 
   function toggleAttendee(name: string) {
@@ -168,9 +187,21 @@ export function EditConcertDialog({ concert }: Props) {
           >
             {t("edit.action")}
           </button>
+          <button
+            type="button"
+            className="w-full rounded-md px-2 py-1.5 text-left text-sm text-red-400 transition hover:bg-red-500/10"
+            onClick={() => {
+              setMenuOpen(false);
+              setDeleteConfirm("");
+              setDeleteOpen(true);
+            }}
+          >
+            {t("delete.action")}
+          </button>
         </PopoverContent>
       </Popover>
 
+      {/* Edit dialog */}
       <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }}>
         <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto bg-coven-surface text-coven-text">
           <DialogHeader>
@@ -286,6 +317,42 @@ export function EditConcertDialog({ concert }: Props) {
             <Button onClick={handleSave} disabled={loading} className="w-full">
               {loading ? t("form.updating") : t("form.update_concert")}
             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirmation dialog */}
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogContent className="max-w-sm bg-coven-surface text-coven-text">
+          <DialogHeader>
+            <DialogTitle className="text-red-400">{t("delete.title")}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-coven-text-muted">
+              {t("delete.confirm_text")}
+            </p>
+            <p className="text-sm font-semibold text-coven-text">{concert.band_name}</p>
+            <Input
+              value={deleteConfirm}
+              onChange={(e) => setDeleteConfirm(e.target.value)}
+              placeholder={t("delete.placeholder")}
+            />
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => setDeleteOpen(false)}
+              >
+                {t("delete.cancel")}
+              </Button>
+              <Button
+                className="flex-1 bg-red-500 text-white hover:bg-red-600 disabled:opacity-40"
+                disabled={deleteConfirm !== concert.band_name || deleteLoading}
+                onClick={handleDelete}
+              >
+                {deleteLoading ? t("delete.deleting") : t("delete.button")}
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

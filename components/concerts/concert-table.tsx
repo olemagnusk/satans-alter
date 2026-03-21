@@ -10,6 +10,12 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Popover,
@@ -229,6 +235,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
     () => new Set(DEFAULT_VISIBLE)
   );
   const [isScrolled, setIsScrolled] = useState(false);
+  const [noteDialog, setNoteDialog] = useState<{ band: string; note: string } | null>(null);
 
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     setIsScrolled(e.currentTarget.scrollLeft > 0);
@@ -596,7 +603,11 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     )}
                     {isVisible("booker") && (
                       <TableCell className="whitespace-nowrap">
-                        {concert.booker ? displayName(concert.booker) : "–"}
+                        {concert.booker ? (
+                          <span className="inline-flex rounded-full bg-coven-primary/10 px-2 py-0.5 text-xs font-medium text-coven-primary">
+                            {displayName(concert.booker)}
+                          </span>
+                        ) : "–"}
                       </TableCell>
                     )}
                     {isVisible("main") && (
@@ -635,25 +646,22 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     )}
                     {isVisible("standins") && (
                       <TableCell>
-                        {concert.stand_ins?.length ? (
-                          <div className="flex flex-wrap gap-1">
-                            {concert.stand_ins.map((name) => (
-                              <span
-                                key={name}
-                                className="inline-flex rounded-full bg-coven-border px-2 py-0.5 text-xs font-medium text-coven-text-soft"
-                              >
-                                {name}
-                              </span>
-                            ))}
-                          </div>
-                        ) : (
-                          "–"
-                        )}
+                        {concert.stand_ins?.length
+                          ? concert.stand_ins.join(", ")
+                          : "–"}
                       </TableCell>
                     )}
                     {isVisible("note") && (
-                      <TableCell className="max-w-[150px] truncate">
-                        {concert.note || "–"}
+                      <TableCell className="max-w-[150px]">
+                        {concert.note ? (
+                          <button
+                            type="button"
+                            className="max-w-full truncate text-left text-xs text-coven-text-muted underline decoration-coven-border underline-offset-2 transition hover:text-coven-text hover:decoration-coven-text-muted"
+                            onClick={() => setNoteDialog({ band: concert.band_name, note: concert.note! })}
+                          >
+                            {concert.note}
+                          </button>
+                        ) : "–"}
                       </TableCell>
                     )}
                     <TableCell className="w-8 px-1">
@@ -666,6 +674,19 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
           </Table>
         </div>
       </div>
+
+      {/* Note overlay dialog */}
+      <Dialog open={!!noteDialog} onOpenChange={(v) => { if (!v) setNoteDialog(null); }}>
+        <DialogContent className="max-w-sm bg-coven-surface text-coven-text">
+          <DialogHeader>
+            <DialogTitle>{t("note.title")}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-coven-text-muted">{noteDialog?.band}</p>
+            <p className="text-sm text-coven-text">{noteDialog?.note}</p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

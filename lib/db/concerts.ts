@@ -63,3 +63,7 @@ export async function updateConcert(id: string, input: ConcertUpdateInput): Prom
   `;
   return rows[0] as Concert;
 }
+
+export async function deleteConcert(id: string): Promise<void> {
+  await sql`DELETE FROM concerts WHERE id = ${id}`;
+}

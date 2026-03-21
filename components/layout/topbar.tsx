@@ -37,7 +37,7 @@ export function Topbar() {
             alt="Satans Alter"
             width={1024}
             height={202}
-            className="h-7 w-auto"
+            className="h-9 w-auto"
             priority
           />
         </Link>
