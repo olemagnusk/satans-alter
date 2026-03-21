@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, LayoutDashboard, CalendarDays, BarChart3, Sparkles } from "lucide-react";
@@ -85,9 +86,14 @@ export function MobileNav() {
           <div className="relative flex h-full flex-col px-6 py-6 animate-in slide-in-from-top-4 fade-in duration-300">
             {/* Header: logo + close */}
             <div className="flex items-center justify-between">
-              <h1 className="_font-black-dread text-[28px] leading-none tracking-[0.08em] text-coven-primary">
-                SATANS ALTER
-              </h1>
+              <Image
+                src="/branding/satans-alter-horizontal.png"
+                alt="Satans Alter"
+                width={1024}
+                height={202}
+                className="h-8 w-auto"
+                priority
+              />
               <button
                 type="button"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-coven-text-muted transition hover:bg-coven-active hover:text-coven-text"

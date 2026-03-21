@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -30,9 +31,14 @@ export function Topbar() {
     <header className="flex h-16 items-center justify-between border-b border-coven-border bg-coven-bg/60 px-4 backdrop-blur md:h-16 md:px-10">
       {/* Mobile: logo left | Desktop: breadcrumbs */}
       <div className="flex items-center gap-3">
-        <h1 className="_font-black-dread text-[26px] leading-none tracking-[0.08em] text-coven-text md:hidden">
-          SATANS ALTER
-        </h1>
+        <Image
+          src="/branding/satans-alter-horizontal.png"
+          alt="Satans Alter"
+          width={1024}
+          height={202}
+          className="h-7 w-auto md:hidden"
+          priority
+        />
         <nav
           aria-label="Breadcrumb"
           className="hidden items-center gap-1 text-sm text-coven-text-muted md:flex"
