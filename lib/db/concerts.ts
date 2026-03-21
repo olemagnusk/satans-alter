@@ -3,6 +3,9 @@ import type { Concert, ConcertInput } from "@/lib/validation/concert";
 
 export async function createConcert(input: ConcertInput, userId: string) {
   const supabase = await createSupabaseServerClient();
+  if (!supabase) {
+    throw new Error("Database not configured");
+  }
 
   const { data, error } = await supabase
     .from("concerts")
@@ -31,6 +34,9 @@ export async function createConcert(input: ConcertInput, userId: string) {
 
 export async function listConcerts(): Promise<Concert[]> {
   const supabase = await createSupabaseServerClient();
+  if (!supabase) {
+    return [];
+  }
   const { data, error } = await supabase
     .from("concerts")
     .select("*")
