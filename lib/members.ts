@@ -12,7 +12,12 @@ export const MEMBERS: Member[] = [
 
 export const MEMBER_NICKNAMES = MEMBERS.map((m) => m.nickname);
 
+const ALIASES: Record<string, string> = {
+  Pils: "Pilsen",
+};
+
 export function displayName(dbName: string): string {
+  if (ALIASES[dbName]) return ALIASES[dbName];
   const member = MEMBERS.find((m) => m.dbName === dbName);
   return member ? member.nickname : dbName;
 }
