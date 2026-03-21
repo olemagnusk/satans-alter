@@ -25,6 +25,7 @@ const config: Config = {
           border: "var(--coven-border)",
           "border-strong": "var(--coven-border-strong)",
           active: "var(--coven-active)",
+          "surface-hover": "var(--coven-surface-hover)",
           grid: "var(--coven-grid)"
         }
       },

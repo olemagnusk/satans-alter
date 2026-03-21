@@ -31,7 +31,7 @@ export default async function DashboardPage() {
         {t("dashboard.title")}
       </h2>
       <DashboardActions />
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <NextConcert initialDate={nextDate} />
         <Card>
           <CardHeader>
@@ -85,14 +85,8 @@ export default async function DashboardPage() {
         </CardContent>
       </Card>
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader>
           <CardTitle>{t("dashboard.recent_concerts")}</CardTitle>
-          <Link
-            href="/concerts"
-            className="rounded-lg border border-coven-border px-3 py-1.5 text-xs text-coven-text-muted transition hover:border-coven-primary hover:text-coven-text"
-          >
-            {t("dashboard.see_all_concerts")}
-          </Link>
         </CardHeader>
         <CardContent className="text-sm text-coven-text-soft">
           {recent.length === 0 ? (
@@ -100,6 +94,14 @@ export default async function DashboardPage() {
           ) : (
             <RecentConcerts concerts={recent} />
           )}
+          <div className="mt-4">
+            <Link
+              href="/concerts"
+              className="inline-flex rounded-xl bg-coven-primary px-4 py-2.5 text-xs font-medium text-coven-bg transition hover:bg-coven-primary-hover"
+            >
+              {t("dashboard.see_all_concerts")}
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

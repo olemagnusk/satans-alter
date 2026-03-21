@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { List, Rows3 } from "lucide-react";
 import {
   Table,
@@ -52,6 +52,11 @@ function ScoreDisplay({
 
 export function RecentConcerts({ concerts }: { concerts: Concert[] }) {
   const [expanded, setExpanded] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    setIsScrolled(e.currentTarget.scrollLeft > 0);
+  }, []);
 
   const memberScores = (concert: Concert, type: "main" | "support") => {
     const prefix = type === "main" ? "score_main_" : "score_support_";
@@ -63,6 +68,10 @@ export function RecentConcerts({ concerts }: { concerts: Concert[] }) {
         | null,
     }));
   };
+
+  const stickyBandShadow = isScrolled
+    ? "after:pointer-events-none after:absolute after:right-0 after:top-0 after:h-full after:w-2 after:translate-x-full after:bg-gradient-to-r after:from-coven-bg/40 after:to-transparent after:content-['']"
+    : "";
 
   return (
     <div className="space-y-3">
@@ -94,13 +103,13 @@ export function RecentConcerts({ concerts }: { concerts: Concert[] }) {
           </button>
         </div>
       </div>
-      <div className="-mx-4 overflow-x-auto sm:mx-0">
+      <div onScroll={handleScroll} className="-mx-4 overflow-x-auto sm:mx-0">
         <div className="inline-block min-w-full align-middle">
           <Table>
             <TableHead>
               <TableRow>
                 <TableHeadCell>{t("col.date")}</TableHeadCell>
-                <TableHeadCell>{t("col.band")}</TableHeadCell>
+                <TableHeadCell className={`sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}`}>{t("col.band")}</TableHeadCell>
                 <TableHeadCell>{t("col.support")}</TableHeadCell>
                 <TableHeadCell>{t("col.venue")}</TableHeadCell>
                 <TableHeadCell>{t("col.booker")}</TableHeadCell>
@@ -114,7 +123,7 @@ export function RecentConcerts({ concerts }: { concerts: Concert[] }) {
                   <TableCell className="whitespace-nowrap text-xs sm:text-sm">
                     {formatDate(concert.date)}
                   </TableCell>
-                  <TableCell className="max-w-[120px] truncate text-xs font-semibold sm:max-w-none sm:text-sm">
+                  <TableCell className={`sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface group-hover:bg-coven-surface-hover text-xs font-semibold sm:max-w-none sm:text-sm transition-colors ${stickyBandShadow}`}>
                     {concert.band_name}
                   </TableCell>
                   <TableCell className="whitespace-nowrap text-xs sm:text-sm">

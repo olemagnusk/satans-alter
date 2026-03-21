@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Search, X, ChevronUp, ChevronDown, List, Rows3, SlidersHorizontal, Check } from "lucide-react";
 import {
   Table,
@@ -229,20 +229,10 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
     () => new Set(DEFAULT_VISIBLE)
   );
   const [isScrolled, setIsScrolled] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = useCallback(() => {
-    if (scrollRef.current) {
-      setIsScrolled(scrollRef.current.scrollLeft > 0);
-    }
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    setIsScrolled(e.currentTarget.scrollLeft > 0);
   }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
 
   function toggleColumn(key: ColumnKey) {
     setVisibleColumns((prev) => {
@@ -550,7 +540,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
       )}
 
       {/* Table */}
-      <div ref={scrollRef} className="-mx-4 overflow-x-auto sm:mx-0">
+      <div onScroll={handleScroll} className="-mx-4 overflow-x-auto sm:mx-0">
         <div className="inline-block min-w-full align-middle">
           <Table>
             <TableHead>
@@ -588,7 +578,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                       </TableCell>
                     )}
                     {isVisible("band") && (
-                      <TableCell className={`sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface text-xs font-semibold sm:max-w-none sm:text-sm ${stickyBandShadow}`}>
+                      <TableCell className={`sticky left-0 z-10 max-w-[120px] truncate bg-coven-surface group-hover:bg-coven-surface-hover text-xs font-semibold sm:max-w-none sm:text-sm transition-colors ${stickyBandShadow}`}>
                         {concert.band_name}
                       </TableCell>
                     )}
