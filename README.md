@@ -1,6 +1,6 @@
 # Concert Dashboard
 
-Internal concert tracking dashboard built with Next.js App Router, TypeScript, Tailwind CSS, shadcn-style components, and Supabase (auth, Postgres, storage).
+Internal concert tracking dashboard built with Next.js App Router, TypeScript, Tailwind CSS, shadcn-style components, and Vercel Postgres (Neon).
 
 ## Getting started
 
@@ -10,20 +10,15 @@ Internal concert tracking dashboard built with Next.js App Router, TypeScript, T
 npm install
 ```
 
-2. Configure Supabase:
+2. Configure database:
 
-- Create a project at https://supabase.com.
-- In the SQL editor, apply `supabase/concerts_schema.sql` to create the `concerts` table.
-- Create a storage bucket named `concert-images` (public or with signed URLs).
-- Create a shared email/password user in Supabase Auth for internal access.
+- The project uses Vercel Postgres (Neon). The database is linked via the Vercel dashboard (Storage tab).
+- Run `vercel env pull .env.local` to get the connection string locally.
 
-3. Environment variables:
-
-Create `.env.local` with:
+3. Seed the database:
 
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+npm run db:seed
 ```
 
 4. Run the dev server:
@@ -32,7 +27,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 npm run dev
 ```
 
-Open http://localhost:3000, sign in at `/login` with the shared credentials, then use the dashboard, concerts list, and New Concert form.
+Open http://localhost:3000, sign in at `/login` with `sa`/`sa`, then use the dashboard, concerts list, and New Concert form.
 
 ## Design system & colors
 
@@ -54,19 +49,6 @@ Tailwind color utilities (`bg-coven-*`, `text-coven-*`, `border-coven-*`) are ma
 
 ## Deployment on Vercel
 
-1. Create a new Vercel project pointing to this repository.
-2. In Vercel project settings, add:
-
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-
-3. Deploy. After the first deployment:
-
-- Visit `/login` and sign in with the shared Supabase user.
-- Create several concerts (including images from iPhone/Android).
-- Verify:
-  - New Concert form saves successfully.
-  - Images appear in the Supabase `concert-images` bucket.
-  - Concerts table shows entries.
-  - Dashboard, Statistics, and Insights pages reflect the new data.
-
+1. The project is linked to Vercel with a Neon Postgres database (auto-injected env vars).
+2. Push to `main` → auto-deploy to https://satans-alter.vercel.app.
+3. Visit `/login` and sign in with `sa`/`sa`.

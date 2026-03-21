@@ -1,0 +1,61 @@
+# Satans Alter — Project Rules
+
+## Mobile-First Responsive Design
+
+This app follows a **mobile-first** design philosophy. All code changes must respect this:
+
+1. **Write mobile styles first, then layer on desktop overrides.** Use Tailwind's responsive prefixes (`md:`, `lg:`) to add complexity — never the reverse.
+2. **Default layout is single-column.** Grid/multi-column layouts (e.g. `md:grid-cols-2`) must only be added at `md:` breakpoint or above.
+3. **Touch targets must be at least 44×44px** on mobile — buttons, links, form controls.
+4. **Test at 375×812 (iPhone) before any wider viewport.** Every feature or layout change must look correct on mobile first.
+5. **The sidebar is hidden on mobile.** Navigation is handled via the Sheet-based mobile drawer (`components/layout/mobile-nav.tsx`). Never rely on the sidebar being visible for core functionality.
+
+### No Cutoff / No Overflow
+
+6. **Never use `min-w-[…]` on elements inside flex/grid containers** — it forces content wider than the viewport. Use `w-full` and let the container constrain width.
+7. **Never use `max-w-xs` / `max-w-3xl` etc. without a `w-full` companion** and ensure the max-width is smaller than 375px minus padding, or add a responsive override (e.g. `sm:max-w-2xl`).
+8. **Avoid `whitespace-nowrap` on text that could exceed the container width.** If nowrap is needed (e.g. dates), place the element inside an `overflow-x-auto` wrapper.
+9. **Text must wrap, not truncate, in narrow containers.** Only use `truncate` when overflow is truly acceptable and a tooltip/expand exists. Prefer allowing natural text wrap.
+
+### Tables
+
+10. **Progressively reveal table columns by breakpoint.** Show only essential columns (2–3) on mobile, then add columns at `sm:`, `md:`, `lg:`, `xl:` using `hidden sm:table-cell` etc.
+11. **Wrap tables in `overflow-x-auto`** and use `-mx-4 sm:mx-0` to let the table bleed to screen edges on mobile for maximum width.
+12. **Search/filter bars above tables:** put the search input full-width on its own row; place filter buttons in a separate `flex flex-wrap` row below.
+
+### Modals & Overlays
+
+13. **Modals slide up from bottom on mobile** (`items-end` + `rounded-t-xl`), then center on desktop (`sm:items-center` + `sm:rounded-xl`). This is the bottom-sheet pattern.
+14. **Modal padding is tighter on mobile** (`p-4`) and expands on desktop (`sm:p-6`).
+15. **Calendar/date popovers** must use `align="start"` so they don't overflow the right edge on small screens.
+
+### Cards & Widgets
+
+16. **Cards in grid layouts must assume their narrowest possible width.** A card in `md:grid-cols-3` is ~200px wide on a 768px screen — layouts inside those cards must work at that width.
+17. **Stack card content vertically** rather than using `justify-between` in a horizontal flex, which causes overlap in narrow cards.
+
+### Buttons & CTAs
+
+18. **Side-by-side buttons use `grid grid-cols-2`**, not `flex` with `min-w-*`. This guarantees equal width and no overflow.
+19. **Add `shrink-0` to icon containers** inside buttons to prevent icons from being compressed.
+20. **Use `px-3 sm:px-4`** for button padding — tighter on mobile, more spacious on desktop.
+
+### Popovers & Dropdowns
+
+21. **Popovers, dropdowns, and modals** should be responsive — use full-width triggers and appropriately sized content on small screens.
+22. **Typography and spacing** should be compact on mobile and expand with `md:`/`lg:` prefixes.
+
+## Tech Stack
+
+- Next.js 16 (App Router, Turbopack)
+- Vercel Postgres / Neon (database)
+- Tailwind CSS with custom `coven-*` design tokens
+- shadcn/ui components (Radix-based)
+- react-hook-form + Zod for form validation
+
+## Conventions
+
+- Components live in `components/` organized by feature (e.g. `concerts/`, `dashboard/`, `layout/`)
+- Server components by default; add `"use client"` only when needed
+- Custom venues are persisted to localStorage and merge with defaults
+- Members list (Andreas, Dennis, Magnus) is a shared constant

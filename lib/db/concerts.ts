@@ -1,51 +1,38 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { sql } from "@vercel/postgres";
 import type { Concert, ConcertInput } from "@/lib/validation/concert";
 
-export async function createConcert(input: ConcertInput, userId: string) {
-  const supabase = await createSupabaseServerClient();
-  if (!supabase) {
-    throw new Error("Database not configured");
-  }
-
-  const { data, error } = await supabase
-    .from("concerts")
-    .insert({
-      band_name: input.bandName,
-      support_band_1: input.supportBand1 || null,
-      support_band_2: input.supportBand2 || null,
-      booker: input.booker || null,
-      attendees: input.attendees?.length ? input.attendees : null,
-      stand_ins: input.standIns?.length ? input.standIns : null,
-      date: input.date,
-      venue: input.venue || null,
-      note: input.note || null,
-      images: null,
-      created_by: userId
-    })
-    .select("*")
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data as Concert;
-}
-
 export async function listConcerts(): Promise<Concert[]> {
-  const supabase = await createSupabaseServerClient();
-  if (!supabase) {
-    return [];
-  }
-  const { data, error } = await supabase
-    .from("concerts")
-    .select("*")
-    .order("date", { ascending: false });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data ?? []) as Concert[];
+  const { rows } = await sql`SELECT * FROM concerts ORDER BY date DESC`;
+  return rows as Concert[];
 }
 
+function toPostgresArray(arr: string[] | undefined): string | null {
+  if (!arr?.length) return null;
+  return `{${arr.map((s) => `"${s.replace(/"/g, '\\"')}"`).join(",")}}`;
+}
+
+export async function createConcert(input: ConcertInput, userId: string): Promise<Concert> {
+  const attendees = toPostgresArray(input.attendees);
+  const standIns = toPostgresArray(input.standIns);
+
+  const { rows } = await sql`
+    INSERT INTO concerts (
+      band_name, support_band_1, support_band_2, booker,
+      attendees, stand_ins, date, venue, note, images, created_by
+    ) VALUES (
+      ${input.bandName},
+      ${input.supportBand1 || null},
+      ${input.supportBand2 || null},
+      ${input.booker || null},
+      ${attendees},
+      ${standIns},
+      ${input.date},
+      ${input.venue || null},
+      ${input.note || null},
+      ${null},
+      ${userId}
+    )
+    RETURNING *
+  `;
+  return rows[0] as Concert;
+}

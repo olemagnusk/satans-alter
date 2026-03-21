@@ -7,9 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "supabase:start": "supabase start",
-    "supabase:stop": "supabase stop",
-    "import:concerts:local": "SUPABASE_URL=http://127.0.0.1:54321 node scripts/import-concerts.mjs"
+    "db:seed": "npx tsx scripts/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "latest",
@@ -17,8 +15,7 @@
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
-    "@supabase/ssr": "latest",
-    "@supabase/supabase-js": "latest",
+    "@vercel/postgres": "^0.10.0",
     "class-variance-authority": "latest",
     "clsx": "latest",
     "lucide-react": "latest",
@@ -37,6 +34,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^17.3.1",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "^8.4.49",

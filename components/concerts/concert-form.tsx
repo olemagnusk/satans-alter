@@ -6,7 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarDays, Check, ChevronDown, Plus, X } from "lucide-react";
 import { concertInputSchema, type ConcertInput, type ConcertFormValues } from "@/lib/validation/concert";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { createConcertAction } from "@/app/(dashboard)/concerts/new/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -522,7 +522,6 @@ export function ConcertForm() {
   async function onSubmit(values: ConcertInput) {
     setError(null);
     setLoading(true);
-    const supabase = createSupabaseBrowserClient();
 
     const dbValues = {
       ...values,
@@ -530,23 +529,14 @@ export function ConcertForm() {
       attendees: values.attendees?.map(toDbName) ?? [],
     };
 
-    const { error: rpcError } = await supabase.functions.invoke(
-      "create-concert",
-      {
-        body: {
-          concert: dbValues
-        }
-      }
-    );
-
-    setLoading(false);
-
-    if (rpcError) {
+    try {
+      await createConcertAction(dbValues);
+      router.push("/concerts");
+    } catch {
       setError(t("form.save_error"));
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    router.push("/concerts");
   }
 
   return (
