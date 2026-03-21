@@ -139,7 +139,7 @@ export function RecentConcerts({ concerts, cta }: { concerts: Concert[]; cta?: R
                     </TableCell>
                     <TableCell className="whitespace-nowrap">
                       {concert.booker ? (
-                        <span className="inline-flex rounded-full bg-coven-primary/10 px-2 py-0.5 text-xs font-medium text-coven-primary">
+                        <span className="inline-flex rounded-full bg-coven-border px-2 py-0.5 text-xs font-medium text-coven-text-soft">
                           {displayName(concert.booker)}
                         </span>
                       ) : "–"}
