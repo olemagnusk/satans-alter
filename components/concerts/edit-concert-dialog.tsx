@@ -223,10 +223,6 @@ export function EditConcertDialog({ concert }: Props) {
                 <Input value={supportBand1} onChange={(e) => setSupportBand1(e.target.value)} />
               </div>
               <div className="space-y-1">
-                <Label>{t("form.support_band_2")}</Label>
-                <Input value={supportBand2} onChange={(e) => setSupportBand2(e.target.value)} />
-              </div>
-              <div className="space-y-1">
                 <Label>{t("form.venue")}</Label>
                 <Input value={venue} onChange={(e) => setVenue(e.target.value)} />
               </div>

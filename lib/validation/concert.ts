@@ -48,4 +48,5 @@ export type Concert = {
   note: string | null;
   images: { storagePath: string; publicUrl: string }[] | null;
   created_by: string | null;
+  scores_revealed: boolean;
 };

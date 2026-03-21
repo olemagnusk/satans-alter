@@ -1,7 +1,8 @@
 import type { Concert } from "@/lib/validation/concert";
 
-/** Average of up to 3 non-null main scores for a single concert. */
+/** Average of up to 3 non-null main scores for a single concert. Only counts revealed scores. */
 function concertAvgMain(c: Concert): number | null {
+  if (!c.scores_revealed) return null;
   const vals = [c.score_main_andreas, c.score_main_dennis, c.score_main_magnus].filter(
     (v): v is number => v != null
   );
@@ -26,8 +27,9 @@ export function getAverageMainScore(concerts: Concert[]) {
   return avgs.reduce((a, b) => a + b, 0) / avgs.length;
 }
 
-/** Average of up to 3 non-null support scores for a single concert. */
+/** Average of up to 3 non-null support scores for a single concert. Only counts revealed scores. */
 function concertAvgSupport(c: Concert): number | null {
+  if (!c.scores_revealed) return null;
   const vals = [c.score_support_andreas, c.score_support_dennis, c.score_support_magnus].filter(
     (v): v is number => v != null
   );

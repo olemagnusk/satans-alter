@@ -402,9 +402,9 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
     return MEMBERS.map((m) => ({
       initial: m.initial,
       nickname: m.nickname,
-      value: concert[`${prefix}${m.dbName.toLowerCase()}` as keyof Concert] as
-        | number
-        | null,
+      value: concert.scores_revealed
+        ? (concert[`${prefix}${m.dbName.toLowerCase()}` as keyof Concert] as number | null)
+        : null,
     }));
   };
 

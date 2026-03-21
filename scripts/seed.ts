@@ -224,7 +224,8 @@ async function main() {
       venue TEXT,
       note TEXT,
       images JSONB,
-      created_by TEXT
+      created_by TEXT,
+      scores_revealed BOOLEAN NOT NULL DEFAULT FALSE
     )
   `;
   console.log("Table ready.");

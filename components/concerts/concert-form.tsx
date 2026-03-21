@@ -584,13 +584,6 @@ export function ConcertForm() {
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="supportBand2">{t("form.support_band_2")}</Label>
-          <Input
-            id="supportBand2"
-            {...form.register("supportBand2")}
-          />
-        </div>
-        <div className="space-y-1">
           <Label>{t("form.booker")}</Label>
           <Controller
             control={form.control}

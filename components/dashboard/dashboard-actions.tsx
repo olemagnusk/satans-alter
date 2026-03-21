@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { PlusCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConcertForm } from "@/components/concerts/concert-form";
 import { t } from "@/lib/i18n";
 
 export function DashboardActions() {
+  const router = useRouter();
   const [isNewConcertOpen, setIsNewConcertOpen] = useState(false);
 
   return (
@@ -27,14 +29,15 @@ export function DashboardActions() {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-coven-border-strong bg-coven-primary px-3 py-3 text-left shadow-sm transition hover:border-coven-primary-hover hover:bg-coven-primary-hover sm:px-4"
+          onClick={() => router.push("/score")}
+          className="group flex w-full cursor-pointer items-center justify-between rounded-xl border border-coven-border-strong bg-coven-primary px-3 py-3 text-left shadow-sm transition hover:border-coven-primary-hover hover:bg-coven-primary-hover sm:px-4"
         >
           <div className="space-y-0.5">
             <p className="text-sm font-medium text-coven-bg">
               {t("dashboard.add_score")}
             </p>
           </div>
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-coven-bg text-coven-primary transition">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-coven-bg text-coven-primary transition group-hover:bg-coven-bg/90">
             <Star className="h-4 w-4" />
           </div>
         </button>

@@ -152,6 +152,31 @@ const nb: Record<string, string> = {
   "insights.venue_label": "Spillestedet",
   "insights.band_label": "Bandet",
   "insights.over": "over",
+
+  // Score flow
+  "score.title": "Legg til score",
+  "score.no_concert": "Ingen konsert å score",
+  "score.no_concert_desc": "Alle konserter har allerede fått score.",
+  "score.back_to_dashboard": "Tilbake til dashboard",
+  "score.pick_member": "Hvem er du?",
+  "score.rate_support": "Score oppvarming",
+  "score.rate_main": "Score hovedband",
+  "score.submit": "Send inn score",
+  "score.submitting": "Sender...",
+  "score.waiting_title": "Venter på de andre...",
+  "score.waiting_desc": "Scorene dine er lagret. Venter til alle har sendt inn.",
+  "score.has_submitted": "har sendt inn",
+  "score.waiting_for": "venter...",
+  "score.ready_title": "Alle har scoret!",
+  "score.ready_desc": "Alle tre har sendt inn sine score.",
+  "score.reveal_button": "Vis score",
+  "score.waiting_booker": "Venter på at booker skal vise score...",
+  "score.results_main": "Hovedband",
+  "score.results_support": "Oppvarming",
+  "score.average": "Snitt",
+  "score.done": "Ferdig",
+  "score.already_scored": "Du har allerede scoret denne konserten",
+  "score.already_scored_desc": "Vent på at de andre skal bli ferdige.",
 };
 
 export function t(key: string): string {

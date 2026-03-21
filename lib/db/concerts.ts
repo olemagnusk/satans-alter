@@ -67,3 +67,82 @@ export async function updateConcert(id: string, input: ConcertUpdateInput): Prom
 export async function deleteConcert(id: string): Promise<void> {
   await sql`DELETE FROM concerts WHERE id = ${id}`;
 }
+
+/**
+ * Find the most recent concert that doesn't have all scores filled.
+ * Used by the "Legg til score" flow.
+ */
+export async function getLatestUnscoredConcert(): Promise<Concert | null> {
+  const { rows } = await sql`
+    SELECT * FROM concerts
+    WHERE score_main_andreas IS NULL
+       OR score_main_dennis IS NULL
+       OR score_main_magnus IS NULL
+    ORDER BY date DESC
+    LIMIT 1
+  `;
+  return (rows[0] as Concert) ?? null;
+}
+
+/**
+ * Submit scores for a single member.
+ * Only updates the columns for the specified member (by dbName).
+ */
+export async function submitMemberScores(
+  concertId: string,
+  member: "andreas" | "dennis" | "magnus",
+  mainScore: number,
+  supportScore: number | null
+): Promise<void> {
+  if (member === "andreas") {
+    await sql`
+      UPDATE concerts SET
+        score_main_andreas = ${mainScore},
+        score_support_andreas = ${supportScore}
+      WHERE id = ${concertId}
+    `;
+  } else if (member === "dennis") {
+    await sql`
+      UPDATE concerts SET
+        score_main_dennis = ${mainScore},
+        score_support_dennis = ${supportScore}
+      WHERE id = ${concertId}
+    `;
+  } else {
+    await sql`
+      UPDATE concerts SET
+        score_main_magnus = ${mainScore},
+        score_support_magnus = ${supportScore}
+      WHERE id = ${concertId}
+    `;
+  }
+}
+
+/**
+ * Check which members have submitted scores for a concert.
+ */
+export async function getScoreStatus(concertId: string): Promise<{
+  concert: Concert;
+  submitted: { andreas: boolean; dennis: boolean; magnus: boolean };
+  allSubmitted: boolean;
+}> {
+  const { rows } = await sql`SELECT * FROM concerts WHERE id = ${concertId}`;
+  const concert = rows[0] as Concert;
+  const submitted = {
+    andreas: concert.score_main_andreas != null,
+    dennis: concert.score_main_dennis != null,
+    magnus: concert.score_main_magnus != null,
+  };
+  return {
+    concert,
+    submitted,
+    allSubmitted: submitted.andreas && submitted.dennis && submitted.magnus,
+  };
+}
+
+/**
+ * Mark scores as revealed (only booker should call this).
+ */
+export async function revealScores(concertId: string): Promise<void> {
+  await sql`UPDATE concerts SET scores_revealed = TRUE WHERE id = ${concertId}`;
+}
