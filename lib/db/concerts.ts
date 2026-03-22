@@ -18,7 +18,7 @@ export async function createConcert(input: ConcertInput, userId: string): Promis
   const { rows } = await sql`
     INSERT INTO concerts (
       band_name, support_band_1, support_band_2, booker,
-      attendees, stand_ins, date, venue, note, images, created_by
+      attendees, stand_ins, date, venue, note, images, created_by, genre
     ) VALUES (
       ${input.bandName},
       ${input.supportBand1 || null},
@@ -30,7 +30,8 @@ export async function createConcert(input: ConcertInput, userId: string): Promis
       ${input.venue || null},
       ${input.note || null},
       ${null},
-      ${userId}
+      ${userId},
+      ${input.genre || null}
     )
     RETURNING *
   `;
@@ -57,7 +58,8 @@ export async function updateConcert(id: string, input: ConcertUpdateInput): Prom
       score_main_magnus = ${input.scoreMainMagnus ?? null},
       score_support_andreas = ${input.scoreSupportAndreas ?? null},
       score_support_dennis = ${input.scoreSupportDennis ?? null},
-      score_support_magnus = ${input.scoreSupportMagnus ?? null}
+      score_support_magnus = ${input.scoreSupportMagnus ?? null},
+      genre = ${input.genre || null}
     WHERE id = ${id}
     RETURNING *
   `;

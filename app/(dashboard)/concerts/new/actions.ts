@@ -11,6 +11,8 @@ export async function createConcertAction(input: ConcertInput) {
   revalidatePath("/dashboard");
   revalidatePath("/statistics");
   revalidatePath("/insights");
+  revalidatePath("/statistics-personal");
+  revalidatePath("/head-to-head");
   return { success: true };
 }
 
@@ -21,6 +23,8 @@ export async function updateConcertAction(id: string, input: ConcertUpdateInput)
   revalidatePath("/dashboard");
   revalidatePath("/statistics");
   revalidatePath("/insights");
+  revalidatePath("/statistics-personal");
+  revalidatePath("/head-to-head");
   return { success: true };
 }
 
@@ -30,5 +34,7 @@ export async function deleteConcertAction(id: string) {
   revalidatePath("/dashboard");
   revalidatePath("/statistics");
   revalidatePath("/insights");
+  revalidatePath("/statistics-personal");
+  revalidatePath("/head-to-head");
   return { success: true };
 }

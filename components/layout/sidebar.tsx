@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-import { LayoutDashboard, CalendarDays, BarChart3, Sparkles } from "lucide-react";
+import { LayoutDashboard, CalendarDays, BarChart3, Users, Swords, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n";
@@ -12,6 +12,8 @@ const navItems = [
   { href: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
   { href: "/concerts", label: t("nav.concerts"), icon: CalendarDays },
   { href: "/statistics", label: t("nav.statistics"), icon: BarChart3 },
+  { href: "/statistics-personal", label: t("nav.statistics_personal"), icon: Users },
+  { href: "/head-to-head", label: t("nav.head_to_head"), icon: Swords },
   { href: "/insights", label: t("nav.insights"), icon: Sparkles }
 ];
 
@@ -38,7 +40,7 @@ export function Sidebar() {
         </div>
         <nav className="mt-4 space-y-3.5">
           {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href);
+            const isActive = pathname === item.href || (item.href !== "/statistics" && pathname.startsWith(item.href));
             const Icon = item.icon;
             return (
               <Link key={item.href} href={item.href}>

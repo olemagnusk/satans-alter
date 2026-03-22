@@ -8,7 +8,8 @@ const nb: Record<string, string> = {
   // Navigation
   "nav.dashboard": "Dashboard",
   "nav.concerts": "Konserter",
-  "nav.statistics": "Statistikk",
+  "nav.statistics": "Stats: Band & scores",
+  "nav.statistics_personal": "Stats: Per person",
   "nav.insights": "Innsikt",
   "nav.login": "Logg inn",
 
@@ -95,6 +96,10 @@ const nb: Record<string, string> = {
   "form.attendees": "Deltakere",
   "form.standins": "Vikarer",
   "form.venue": "Spillested",
+  "form.genre": "Sjanger",
+  "form.select_genre": "Velg sjanger...",
+  "form.genre_name": "Navn på sjanger...",
+  "form.add_new_genre": "Legg til ny sjanger",
   "form.note": "Notat",
   "form.select_booker": "Velg booker...",
   "form.selected": "valgt",
@@ -143,6 +148,30 @@ const nb: Record<string, string> = {
   "stats.no_scored": "Ingen konserter med score ennå.",
   "stats.concerts_count_singular": "konsert",
   "stats.concerts_count_plural": "konserter",
+
+  // Per-person statistics
+  "stats_personal.title": "Stats: Per person",
+  "stats_personal.avg_score": "Gjennomsnittsscore",
+  "stats_personal.band": "Band",
+  "stats_personal.support": "Oppvarming",
+  "stats_personal.top_venue": "Topp scenescore",
+  "stats_personal.top_genre": "Topp sjangerscore",
+  "stats_personal.no_data": "Ingen data",
+  "stats_personal.concerts_count_singular": "konsert",
+  "stats_personal.concerts_count_plural": "konserter",
+  "stats_personal.top_band": "Personlig topp band",
+  "stats_personal.score_distribution": "Score-fordeling",
+
+  // Head to head statistics
+  "nav.head_to_head": "Stats: Head to head",
+  "stats_h2h.title": "Stats: Head to head",
+  "stats_h2h.strictest": "Strengste scorer",
+  "stats_h2h.kindest": "Snilleste scorer",
+  "stats_h2h.most_disagreed": "Mest uenige",
+  "stats_h2h.avg_diff": "snitt diff",
+  "stats_h2h.concerts_count_singular": "konsert",
+  "stats_h2h.concerts_count_plural": "konserter",
+  "stats_h2h.no_data": "Ingen data",
 
   // Insights page
   "insights.title": "Innsikt",

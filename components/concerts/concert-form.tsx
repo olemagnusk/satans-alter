@@ -18,7 +18,7 @@ import {
 
 import { MEMBERS as MEMBER_LIST, toDbName } from "@/lib/members";
 import { t } from "@/lib/i18n";
-import { DatePicker, VenueSelect, StandinsSelect } from "@/components/concerts/form-fields";
+import { DatePicker, VenueSelect, GenreSelect, StandinsSelect } from "@/components/concerts/form-fields";
 
 const MEMBERS = MEMBER_LIST.map((m) => m.nickname);
 
@@ -167,6 +167,7 @@ export function ConcertForm() {
       standIns: [],
       date: "",
       venue: "",
+      genre: "",
       note: ""
     }
   });
@@ -281,6 +282,19 @@ export function ConcertForm() {
             name="venue"
             render={({ field }) => (
               <VenueSelect
+                value={field.value ?? ""}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label>{t("form.genre")}</Label>
+          <Controller
+            control={form.control}
+            name="genre"
+            render={({ field }) => (
+              <GenreSelect
                 value={field.value ?? ""}
                 onChange={field.onChange}
               />

@@ -10,7 +10,8 @@ export const concertInputSchema = z.object({
   standIns: z.array(z.string()).optional(),
   date: z.string().min(1, t("validation.date_required")),
   venue: z.string().optional().or(z.literal("")),
-  note: z.string().optional().or(z.literal(""))
+  note: z.string().optional().or(z.literal("")),
+  genre: z.string().optional().or(z.literal(""))
 });
 
 const scoreField = z.number().int().min(1).max(6).nullable().optional();
@@ -49,4 +50,5 @@ export type Concert = {
   images: { storagePath: string; publicUrl: string }[] | null;
   created_by: string | null;
   scores_revealed: boolean;
+  genre: string | null;
 };

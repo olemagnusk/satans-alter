@@ -232,6 +232,152 @@ export function VenueSelect({
   );
 }
 
+/* ── GenreSelect ── */
+
+export const DEFAULT_GENRES = [
+  "Black Metal",
+  "Classic Rock",
+  "Country",
+  "Death Metal",
+  "Doom Metal",
+  "Hard Rock",
+  "Hardcore Punk",
+  "Indie Rock",
+  "Progressive Death Metal",
+  "Progressive Rock",
+  "Punk Rock",
+  "Rock",
+  "Sludge Metal",
+  "Southern Rock",
+  "Stoner Rock",
+  "Thrash Metal",
+];
+
+const GENRES_STORAGE_KEY = "satans-alter-custom-genres";
+
+function getStoredGenres(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(GENRES_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveCustomGenre(genre: string) {
+  const custom = getStoredGenres();
+  if (!custom.includes(genre)) {
+    localStorage.setItem(GENRES_STORAGE_KEY, JSON.stringify([...custom, genre]));
+  }
+}
+
+export function GenreSelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [newGenre, setNewGenre] = useState("");
+  const [customGenres, setCustomGenres] = useState<string[]>([]);
+
+  useEffect(() => {
+    setCustomGenres(getStoredGenres());
+  }, []);
+
+  const allGenres = Array.from(new Set([...DEFAULT_GENRES, ...customGenres])).sort();
+
+  function handleAddGenre() {
+    const trimmed = newGenre.trim();
+    if (!trimmed) return;
+    if (!allGenres.includes(trimmed)) {
+      saveCustomGenre(trimmed);
+      setCustomGenres((prev) => [...prev, trimmed]);
+    }
+    onChange(trimmed);
+    setNewGenre("");
+    setAdding(false);
+    setOpen(false);
+  }
+
+  return (
+    <Popover open={open} onOpenChange={(o) => { setOpen(o); if (!o) setAdding(false); }}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="flex h-9 w-full items-center justify-between rounded-lg border border-coven-border bg-transparent px-3 text-sm text-coven-text shadow-sm transition-colors hover:border-coven-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coven-primary focus-visible:ring-offset-2 focus-visible:ring-offset-coven-bg"
+        >
+          <span className={value ? "text-coven-text" : "text-coven-text-muted"}>
+            {value || t("form.select_genre")}
+          </span>
+          <ChevronDown className="h-4 w-4 text-coven-text-muted" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="max-h-72 w-[var(--radix-popover-trigger-width)] overflow-y-auto p-1" align="start">
+        {adding ? (
+          <div className="flex items-center gap-1 p-1">
+            <Input
+              autoFocus
+              placeholder={t("form.genre_name")}
+              value={newGenre}
+              onChange={(e) => setNewGenre(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleAddGenre();
+                }
+                if (e.key === "Escape") {
+                  setAdding(false);
+                }
+              }}
+              className="h-8 text-sm"
+            />
+            <Button
+              type="button"
+              onClick={handleAddGenre}
+              className="h-8 shrink-0 px-2 text-xs"
+            >
+              {t("form.add")}
+            </Button>
+          </div>
+        ) : (
+          <>
+            {allGenres.map((genre) => (
+              <button
+                key={genre}
+                type="button"
+                className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition hover:bg-coven-active ${
+                  value === genre ? "bg-coven-primary/10 text-coven-primary" : "text-coven-text"
+                }`}
+                onClick={() => {
+                  onChange(genre);
+                  setOpen(false);
+                }}
+              >
+                {value === genre && <Check className="h-3.5 w-3.5" />}
+                {genre}
+              </button>
+            ))}
+            <div className="mt-1 border-t border-coven-border pt-1">
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-coven-text-muted transition hover:bg-coven-active hover:text-coven-text"
+                onClick={() => setAdding(true)}
+              >
+                <Plus className="h-3.5 w-3.5" />
+                {t("form.add_new_genre")}
+              </button>
+            </div>
+          </>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 /* ── StandinsSelect ── */
 
 export function StandinsSelect({

@@ -20,7 +20,7 @@ import { Label } from "@/components/ui/label";
 import { MEMBERS as MEMBER_LIST, displayName, toDbName } from "@/lib/members";
 import { updateConcertAction, deleteConcertAction } from "@/app/(dashboard)/concerts/new/actions";
 import { t } from "@/lib/i18n";
-import { DatePicker, VenueSelect, StandinsSelect } from "@/components/concerts/form-fields";
+import { DatePicker, VenueSelect, GenreSelect, StandinsSelect } from "@/components/concerts/form-fields";
 import type { Concert } from "@/lib/validation/concert";
 
 type Props = {
@@ -79,6 +79,7 @@ export function EditConcertDialog({ concert }: Props) {
   const [venue, setVenue] = useState(concert.venue ?? "");
   const [date, setDate] = useState(concert.date);
   const [note, setNote] = useState(concert.note ?? "");
+  const [genre, setGenre] = useState(concert.genre ?? "");
   const [attendees, setAttendees] = useState<string[]>(
     concert.attendees?.map(displayName) ?? []
   );
@@ -100,6 +101,7 @@ export function EditConcertDialog({ concert }: Props) {
     setVenue(concert.venue ?? "");
     setDate(concert.date);
     setNote(concert.note ?? "");
+    setGenre(concert.genre ?? "");
     setAttendees(concert.attendees?.map(displayName) ?? []);
     setStandIns(concert.stand_ins ?? []);
     setScoreMainAndreas(concert.score_main_andreas);
@@ -127,6 +129,7 @@ export function EditConcertDialog({ concert }: Props) {
         date,
         venue,
         note,
+        genre,
         scoreMainAndreas,
         scoreMainDennis,
         scoreMainMagnus,
@@ -226,6 +229,10 @@ export function EditConcertDialog({ concert }: Props) {
               <div className="space-y-1">
                 <Label>{t("form.venue")}</Label>
                 <VenueSelect value={venue} onChange={setVenue} />
+              </div>
+              <div className="space-y-1">
+                <Label>{t("form.genre")}</Label>
+                <GenreSelect value={genre} onChange={setGenre} />
               </div>
               <div className="space-y-1">
                 <Label>{t("form.booker")}</Label>

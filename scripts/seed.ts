@@ -14,6 +14,7 @@ const ALLE = ["Pils", "Djen", "Krem"];
 const CONCERTS = [
   {
     band_name: "Aktiv Dödshjelp",
+    genre: "Punk Rock",
     date: "2023-11-01",
     booker: "Pils",
     venue: "John Dee",
@@ -23,6 +24,7 @@ const CONCERTS = [
   },
   {
     band_name: "Spidergawd",
+    genre: "Rock",
     date: "2024-01-01",
     booker: "Krem",
     venue: "Rockefeller",
@@ -32,6 +34,7 @@ const CONCERTS = [
   },
   {
     band_name: "The Good The Bad & The Zugly",
+    genre: "Hardcore Punk",
     date: "2024-03-01",
     booker: "Djen",
     venue: "Rockefeller",
@@ -41,6 +44,7 @@ const CONCERTS = [
   },
   {
     band_name: "Kal-El",
+    genre: "Stoner Rock",
     support_band_1: "Suncraft",
     date: "2024-05-01",
     booker: "Djen",
@@ -51,6 +55,7 @@ const CONCERTS = [
   },
   {
     band_name: "Susperia",
+    genre: "Black Metal",
     date: "2024-06-01",
     booker: "Krem",
     venue: "John Dee",
@@ -60,6 +65,7 @@ const CONCERTS = [
   },
   {
     band_name: "Looser",
+    genre: "Punk Rock",
     support_band_1: "Lommekniv",
     date: "2024-08-01",
     booker: "Djen",
@@ -71,6 +77,7 @@ const CONCERTS = [
   },
   {
     band_name: "Black Tusk",
+    genre: "Sludge Metal",
     support_band_1: "Grand Atomic",
     date: "2024-10-01",
     booker: "Pils",
@@ -81,6 +88,7 @@ const CONCERTS = [
   },
   {
     band_name: "Sheepdogs",
+    genre: "Classic Rock",
     support_band_1: "The Commoners",
     date: "2024-11-01",
     booker: "Krem",
@@ -92,6 +100,7 @@ const CONCERTS = [
   },
   {
     band_name: "Skadefryd (Vader)",
+    genre: "Death Metal",
     support_band_1: "Toxaemia",
     date: "2024-12-01",
     booker: "Djen",
@@ -103,6 +112,7 @@ const CONCERTS = [
   },
   {
     band_name: "Taake",
+    genre: "Black Metal",
     support_band_1: "Nattefrost",
     date: "2025-01-01",
     booker: "Pils",
@@ -113,6 +123,7 @@ const CONCERTS = [
   },
   {
     band_name: "Rivers of Nihil",
+    genre: "Progressive Death Metal",
     support_band_1: "Cynic",
     date: "2025-03-01",
     booker: "Krem",
@@ -124,6 +135,7 @@ const CONCERTS = [
   },
   {
     band_name: "Orango",
+    genre: "Southern Rock",
     support_band_1: "High Chief",
     date: "2025-05-01",
     booker: "Djen",
@@ -134,6 +146,7 @@ const CONCERTS = [
   },
   {
     band_name: "Sepultura",
+    genre: "Thrash Metal",
     date: "2025-06-01",
     booker: "Pils",
     venue: "Sentrum Scene",
@@ -142,6 +155,7 @@ const CONCERTS = [
   },
   {
     band_name: "Papangu",
+    genre: "Progressive Rock",
     support_band_1: "Sex Magic Wizard",
     date: "2025-09-01",
     booker: "Krem",
@@ -152,6 +166,7 @@ const CONCERTS = [
   },
   {
     band_name: "The Darkness",
+    genre: "Hard Rock",
     date: "2025-10-06",
     booker: "Djen",
     venue: "Rockefeller",
@@ -163,6 +178,7 @@ const CONCERTS = [
   },
   {
     band_name: "Trueandtrue",
+    genre: "Indie Rock",
     support_band_1: "Døden 505",
     date: "2025-10-01",
     booker: "Pils",
@@ -173,6 +189,7 @@ const CONCERTS = [
   },
   {
     band_name: "Henchlock",
+    genre: "Doom Metal",
     support_band_1: "Kløster",
     date: "2025-12-01",
     booker: "Krem",
@@ -183,6 +200,7 @@ const CONCERTS = [
   },
   {
     band_name: "Hällas",
+    genre: "Progressive Rock",
     date: "2026-02-01",
     booker: "Djen",
     venue: "Rockefeller",
@@ -192,6 +210,7 @@ const CONCERTS = [
   },
   {
     band_name: "Bayker Blankenship",
+    genre: "Country",
     support_band_1: "Noah James",
     date: "2026-02-01",
     booker: "Pils",
@@ -225,7 +244,8 @@ async function main() {
       note TEXT,
       images JSONB,
       created_by TEXT,
-      scores_revealed BOOLEAN NOT NULL DEFAULT FALSE
+      scores_revealed BOOLEAN NOT NULL DEFAULT FALSE,
+      genre TEXT
     )
   `;
   console.log("Table ready.");
@@ -251,7 +271,7 @@ async function main() {
         attendees, stand_ins, date, venue,
         score_main_andreas, score_main_dennis, score_main_magnus,
         score_support_andreas, score_support_dennis, score_support_magnus,
-        note, created_by
+        note, created_by, genre
       ) VALUES (
         ${c.band_name},
         ${(c as any).support_band_1 ?? null},
@@ -268,7 +288,8 @@ async function main() {
         ${(c as any).score_support_dennis ?? null},
         ${(c as any).score_support_magnus ?? null},
         ${(c as any).note ?? null},
-        ${"sa"}
+        ${"sa"},
+        ${(c as any).genre ?? null}
       )
     `;
     console.log(`  ✓ ${c.band_name}`);
