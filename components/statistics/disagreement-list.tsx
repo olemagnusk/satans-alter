@@ -13,10 +13,10 @@ export function DisagreementList({ disagreements }: { disagreements: Disagreemen
       {disagreements.map((d, i) => {
         const isOpen = expanded === d.pair;
         return (
-          <li key={d.pair}>
+          <li key={d.pair} className="py-2 first:pt-0 last:pb-0">
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-2 py-2 first:pt-0 last:pb-0"
+              className="flex w-full items-center justify-between gap-2"
               onClick={() => setExpanded(isOpen ? null : d.pair)}
             >
               <div className="flex items-baseline gap-2">
@@ -29,7 +29,7 @@ export function DisagreementList({ disagreements }: { disagreements: Disagreemen
                 </span>
                 <ChevronDown
                   className={cn(
-                    "h-4 w-4 shrink-0 text-coven-text-muted transition-transform",
+                    "h-3.5 w-3.5 shrink-0 text-coven-text-muted transition-transform",
                     isOpen && "rotate-180"
                   )}
                 />
@@ -37,7 +37,7 @@ export function DisagreementList({ disagreements }: { disagreements: Disagreemen
             </button>
 
             {isOpen && d.topBands.length > 0 && (
-              <div className="mb-2 ml-5 rounded-md border border-coven-border bg-coven-card p-3">
+              <div className="mt-2 ml-5 rounded-md border border-coven-border bg-coven-card p-3">
                 <p className="mb-2 text-xs font-medium text-coven-text-muted">
                   Topp uenighet
                 </p>
