@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { listConcerts } from "@/lib/db/concerts";
-import { getNextConcertDate } from "@/lib/db/settings";
+import { getNextConcertDate, getNextConcertBooker } from "@/lib/db/settings";
 import {
   getAverageMainScore,
   getAverageSupportScore,
@@ -14,9 +14,10 @@ import { RecentConcerts } from "@/components/dashboard/recent-concerts";
 import { t } from "@/lib/i18n";
 
 export default async function DashboardPage() {
-  const [concerts, nextDate] = await Promise.all([
+  const [concerts, nextDate, nextBooker] = await Promise.all([
     listConcerts(),
     getNextConcertDate(),
+    getNextConcertBooker(),
   ]);
   const totals = getTotals(concerts);
   const averageMain = getAverageMainScore(concerts);
@@ -32,7 +33,7 @@ export default async function DashboardPage() {
       </h2>
       <DashboardActions />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <NextConcert initialDate={nextDate} />
+        <NextConcert initialDate={nextDate} initialBooker={nextBooker} />
         <Card>
           <CardHeader>
             <CardTitle>{t("dashboard.total_concerts")}</CardTitle>

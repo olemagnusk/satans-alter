@@ -8,8 +8,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { MEMBERS } from "@/lib/members";
 import { t } from "@/lib/i18n";
-import { setNextConcertDateAction } from "@/app/(dashboard)/dashboard/actions";
+import {
+  setNextConcertDateAction,
+  setNextConcertBookerAction,
+} from "@/app/(dashboard)/dashboard/actions";
 
 function isToday(dateStr: string): boolean {
   const today = new Date();
@@ -43,10 +47,17 @@ function toDateString(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
-export function NextConcert({ initialDate }: { initialDate: string | null }) {
+type Props = {
+  initialDate: string | null;
+  initialBooker: string | null;
+};
+
+export function NextConcert({ initialDate, initialBooker }: Props) {
   const validInitial = initialDate && !isDatePassed(initialDate) ? initialDate : null;
   const [date, setDate] = useState<string | null>(validInitial);
+  const [booker, setBooker] = useState<string | null>(initialBooker);
   const [open, setOpen] = useState(false);
+  const [bookerOpen, setBookerOpen] = useState(false);
 
   async function handleSelect(selected: Date | undefined) {
     if (!selected) return;
@@ -54,6 +65,12 @@ export function NextConcert({ initialDate }: { initialDate: string | null }) {
     setDate(value);
     setOpen(false);
     await setNextConcertDateAction(value);
+  }
+
+  async function handleBookerSelect(nickname: string) {
+    setBooker(nickname);
+    setBookerOpen(false);
+    await setNextConcertBookerAction(nickname);
   }
 
   const expired = date !== null && isDatePassed(date);
@@ -102,6 +119,35 @@ export function NextConcert({ initialDate }: { initialDate: string | null }) {
             {expired ? t("next_concert.passed") : t("next_concert.no_date")}
           </p>
         )}
+
+        <div className="mt-2 flex items-center gap-1.5">
+          <span className="text-xs text-coven-text-muted">{t("next_concert.booker")}:</span>
+          <Popover open={bookerOpen} onOpenChange={setBookerOpen}>
+            <PopoverTrigger asChild>
+              <button
+                type="button"
+                className="rounded-md border border-coven-border px-2 py-0.5 text-xs text-coven-text transition hover:border-coven-primary"
+              >
+                {booker ?? t("next_concert.select_booker")}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-28 p-1" align="start">
+              <ul>
+                {MEMBERS.map((m) => (
+                  <li key={m.nickname}>
+                    <button
+                      type="button"
+                      className="w-full rounded-md px-2 py-1.5 text-left text-xs text-coven-text transition hover:bg-coven-active"
+                      onClick={() => handleBookerSelect(m.nickname)}
+                    >
+                      {m.nickname}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </PopoverContent>
+          </Popover>
+        </div>
       </CardContent>
     </Card>
   );

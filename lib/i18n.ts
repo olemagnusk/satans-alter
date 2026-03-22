@@ -56,6 +56,8 @@ const nb: Record<string, string> = {
   "next_concert.change": "Endre",
   "next_concert.pick_date": "Velg dato",
   "next_concert.today_message": "Det er Satans dag 🤟🍻🔥🎸",
+  "next_concert.booker": "Booker",
+  "next_concert.select_booker": "Velg...",
 
   // Concerts page
   "concerts.title": "Konserter",
