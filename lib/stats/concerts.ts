@@ -1,4 +1,5 @@
 import type { Concert } from "@/lib/validation/concert";
+import { displayName } from "@/lib/members";
 
 /** Average of up to 3 non-null main scores for a single concert. Only counts revealed scores. */
 function concertAvgMain(c: Concert): number | null {
@@ -136,17 +137,18 @@ export function getAverageScorePerVenue(concerts: Concert[], limit?: number) {
   return limit ? sorted.slice(0, limit) : sorted;
 }
 
-/** Average main score grouped by booker. */
+/** Average main score grouped by booker (using display nicknames). */
 export function getBookerScore(concerts: Concert[]): { booker: string; average: number; count: number }[] {
   const bookerScores = new Map<string, { total: number; count: number }>();
   for (const c of concerts) {
     if (!c.booker) continue;
     const avg = concertAvgMain(c);
     if (avg == null) continue;
-    const current = bookerScores.get(c.booker) ?? { total: 0, count: 0 };
+    const nickname = displayName(c.booker);
+    const current = bookerScores.get(nickname) ?? { total: 0, count: 0 };
     current.total += avg;
     current.count += 1;
-    bookerScores.set(c.booker, current);
+    bookerScores.set(nickname, current);
   }
   return Array.from(bookerScores.entries())
     .map(([booker, { total, count }]) => ({

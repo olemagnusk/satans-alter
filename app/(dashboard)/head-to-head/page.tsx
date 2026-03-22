@@ -1,18 +1,38 @@
 import { listConcerts } from "@/lib/db/concerts";
 import { getHeadToHeadStats } from "@/lib/stats/headtohead";
+import { getBookerScore } from "@/lib/stats/concerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExpandableList } from "@/components/statistics/expandable-list";
 import { DisagreementList } from "@/components/statistics/disagreement-list";
 import { t } from "@/lib/i18n";
 
 export default async function HeadToHeadPage() {
   const concerts = await listConcerts();
   const { strictest, disagreements } = getHeadToHeadStats(concerts);
+  const bookerScores = getBookerScore(concerts);
 
   return (
     <div className="space-y-4">
       <h2 className="font-heading text-lg font-semibold tracking-tight">
         {t("stats_h2h.title")}
       </h2>
+
+      {/* Booker score */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("stats.booker_score")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ExpandableList
+            items={bookerScores.map((b) => ({
+              label: b.booker,
+              value: b.average.toFixed(1),
+              sub: `${b.count} ${b.count === 1 ? t("stats_h2h.concerts_count_singular") : t("stats_h2h.concerts_count_plural")}`,
+            }))}
+            emptyMessage={t("stats_h2h.no_data")}
+          />
+        </CardContent>
+      </Card>
 
       {/* Strictest scorer */}
       <Card>

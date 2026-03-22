@@ -67,6 +67,17 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+      <RecentConcerts
+        concerts={recent}
+        cta={
+          <Link
+            href="/concerts"
+            className="inline-flex rounded-xl bg-coven-primary px-4 py-2.5 text-xs font-medium text-coven-bg transition hover:bg-coven-primary-hover active:text-coven-bg"
+          >
+            {t("dashboard.see_all_concerts")}
+          </Link>
+        }
+      />
       <Card>
         <CardHeader>
           <CardTitle>{t("dashboard.top_venues")}</CardTitle>
@@ -101,17 +112,6 @@ export default async function DashboardPage() {
           <ConcertsPerYearChart data={concertsPerYear} />
         </CardContent>
       </Card>
-      <RecentConcerts
-        concerts={recent}
-        cta={
-          <Link
-            href="/concerts"
-            className="inline-flex rounded-xl bg-coven-primary px-4 py-2.5 text-xs font-medium text-coven-bg transition hover:bg-coven-primary-hover active:text-coven-bg"
-          >
-            {t("dashboard.see_all_concerts")}
-          </Link>
-        }
-      />
     </div>
   );
 }
