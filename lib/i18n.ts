@@ -26,6 +26,7 @@ const nb: Record<string, string> = {
   // Sidebar / user
   "auth.signed_in": "Innlogget",
   "auth.sign_out": "Logg ut",
+  "auth.sign_out_full": "Logg meg ut av Alteret",
 
   // Mobile nav
   "mobile.open_menu": "Åpne meny",

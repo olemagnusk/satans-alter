@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -67,8 +66,27 @@ export function NextConcert({ initialDate }: { initialDate: string | null }) {
 
   return (
     <Card className="w-full">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle>{t("next_concert.title")}</CardTitle>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              className="w-fit rounded-lg border border-coven-border px-3 py-1.5 text-xs text-coven-text-muted transition hover:border-coven-primary hover:text-coven-text"
+            >
+              {hasDate ? t("next_concert.change") : t("next_concert.pick_date")}
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="end">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={handleSelect}
+              disabled={{ before: today }}
+              defaultMonth={selectedDate ?? today}
+            />
+          </PopoverContent>
+        </Popover>
       </CardHeader>
       <CardContent>
         {todayIsTheDay ? (
@@ -84,27 +102,6 @@ export function NextConcert({ initialDate }: { initialDate: string | null }) {
             {expired ? t("next_concert.passed") : t("next_concert.no_date")}
           </p>
         )}
-        <div className="mt-2 flex justify-end">
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <button
-                type="button"
-                className="w-fit rounded-lg border border-coven-border px-3 py-1.5 text-xs text-coven-text-muted transition hover:border-coven-primary hover:text-coven-text"
-              >
-                {hasDate ? t("next_concert.change") : t("next_concert.pick_date")}
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="end">
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={handleSelect}
-                disabled={{ before: today }}
-                defaultMonth={selectedDate ?? today}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
       </CardContent>
     </Card>
   );

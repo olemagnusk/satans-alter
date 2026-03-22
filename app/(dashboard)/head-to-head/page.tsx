@@ -1,6 +1,7 @@
 import { listConcerts } from "@/lib/db/concerts";
 import { getHeadToHeadStats } from "@/lib/stats/headtohead";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DisagreementList } from "@/components/statistics/disagreement-list";
 import { t } from "@/lib/i18n";
 
 export default async function HeadToHeadPage() {
@@ -71,7 +72,7 @@ export default async function HeadToHeadPage() {
         </CardContent>
       </Card>
 
-      {/* Most disagreed pairs */}
+      {/* Most disagreed pairs — expandable with top bands */}
       <Card>
         <CardHeader>
           <CardTitle>{t("stats_h2h.most_disagreed")}</CardTitle>
@@ -80,22 +81,7 @@ export default async function HeadToHeadPage() {
           {disagreements.length === 0 ? (
             <p className="text-sm text-coven-text-muted">{t("stats_h2h.no_data")}</p>
           ) : (
-            <ul className="divide-y divide-coven-border">
-              {disagreements.map((d, i) => (
-                <li key={d.pair} className="flex items-center justify-between gap-2 py-2 first:pt-0 last:pb-0">
-                  <div className="flex items-baseline gap-2">
-                    <span className="shrink-0 text-xs tabular-nums text-coven-text-muted">{i + 1}.</span>
-                    <span className="text-sm text-coven-text">{d.pair}</span>
-                    <span className="shrink-0 text-xs text-coven-text-muted">
-                      ({d.count} {d.count === 1 ? t("stats_h2h.concerts_count_singular") : t("stats_h2h.concerts_count_plural")})
-                    </span>
-                  </div>
-                  <span className="shrink-0 text-sm font-semibold text-coven-primary">
-                    {d.avgDiff.toFixed(2)} {t("stats_h2h.avg_diff")}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <DisagreementList disagreements={disagreements} />
           )}
         </CardContent>
       </Card>

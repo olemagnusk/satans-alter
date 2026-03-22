@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-import { LayoutDashboard, CalendarDays, BarChart3, Users, Swords, Sparkles } from "lucide-react";
+import { LayoutDashboard, CalendarDays, BarChart3, Users, Swords } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n";
@@ -14,7 +14,6 @@ const navItems = [
   { href: "/statistics", label: t("nav.statistics"), icon: BarChart3 },
   { href: "/statistics-personal", label: t("nav.statistics_personal"), icon: Users },
   { href: "/head-to-head", label: t("nav.head_to_head"), icon: Swords },
-  { href: "/insights", label: t("nav.insights"), icon: Sparkles }
 ];
 
 export function Sidebar() {
@@ -28,7 +27,7 @@ export function Sidebar() {
   return (
     <aside className="hidden w-64 flex-col justify-between border-r border-coven-border bg-coven-sidebar px-4 py-6 md:flex">
       <div>
-        <div className="mb-6 px-1 pt-1.5">
+        <Link href="/dashboard" className="mb-6 block px-1 pt-1.5">
           <Image
             src="/branding/satans-alter-horizontal.png"
             alt="Satans Alter"
@@ -37,7 +36,7 @@ export function Sidebar() {
             className="h-[2.8rem] w-auto"
             priority
           />
-        </div>
+        </Link>
         <nav className="mt-4 space-y-3.5">
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/statistics" && pathname.startsWith(item.href));
@@ -61,25 +60,15 @@ export function Sidebar() {
         </nav>
       </div>
 
-      <div className="mt-8 border-t border-coven-border pt-4 text-xs text-coven-text-muted">
-        <div className="flex items-center justify-between gap-2">
-          <div className="space-y-0.5">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-coven-text-soft">
-              {t("auth.signed_in")}
-            </p>
-            <p className="text-xs text-coven-text">
-              sa
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 px-3 text-[11px]"
-            onClick={handleSignOut}
-          >
-            {t("auth.sign_out")}
-          </Button>
-        </div>
+      <div className="mt-8 pt-4 text-xs text-coven-text-muted">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-9 w-full text-xs"
+          onClick={handleSignOut}
+        >
+          {t("auth.sign_out_full")}
+        </Button>
       </div>
 
     </aside>

@@ -42,7 +42,7 @@ export function PersonalTabs({ stats }: { stats: MemberStats[] }) {
             {/* Top band */}
             <Card>
               <CardHeader>
-                <CardTitle>{t("stats_personal.top_band")} - {member.nickname}</CardTitle>
+                <CardTitle>{member.nickname}: {t("stats_personal.top_band")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ExpandableList
@@ -58,7 +58,7 @@ export function PersonalTabs({ stats }: { stats: MemberStats[] }) {
             {/* Score distribution */}
             <Card>
               <CardHeader>
-                <CardTitle>{t("stats_personal.score_distribution")} - {member.nickname}</CardTitle>
+                <CardTitle>{member.nickname}: {t("stats_personal.score_distribution")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ScoreDistributionChart data={member.scoreDistribution} />
@@ -68,7 +68,7 @@ export function PersonalTabs({ stats }: { stats: MemberStats[] }) {
             {/* Top venue */}
             <Card>
               <CardHeader>
-                <CardTitle>{t("stats_personal.top_venue")} - {member.nickname}</CardTitle>
+                <CardTitle>{member.nickname}: {t("stats_personal.top_venue")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ExpandableList
@@ -85,7 +85,7 @@ export function PersonalTabs({ stats }: { stats: MemberStats[] }) {
             {/* Top genre */}
             <Card>
               <CardHeader>
-                <CardTitle>{t("stats_personal.top_genre")} - {member.nickname}</CardTitle>
+                <CardTitle>{member.nickname}: {t("stats_personal.top_genre")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ExpandableList

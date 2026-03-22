@@ -1,8 +1,6 @@
 import { listConcerts } from "@/lib/db/concerts";
 import { getAllPersonalStats } from "@/lib/stats/personal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExpandableList } from "@/components/statistics/expandable-list";
-import { ScoreDistributionChart } from "@/components/statistics/score-distribution";
 import { PersonalTabs } from "@/components/statistics/personal-tabs";
 import { t } from "@/lib/i18n";
 
@@ -21,7 +19,7 @@ export default async function PersonalStatsPage() {
         {stats.map((member) => (
           <Card key={member.nickname}>
             <CardHeader>
-              <CardTitle>{member.nickname} – {t("stats_personal.avg_score")}</CardTitle>
+              <CardTitle>{member.nickname}: {t("stats_personal.avg_score")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">

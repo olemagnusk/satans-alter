@@ -23,28 +23,55 @@ export function getStrictestScorer(
     .sort((a, b) => a.average - b.average);
 }
 
-/** For each pair of members, compute average absolute score difference. */
-export function getMostDisagreedPairs(
-  concerts: Concert[]
-): { pair: string; avgDiff: number; count: number }[] {
-  const pairs: { pair: string; avgDiff: number; count: number }[] = [];
+export type BandDisagreement = {
+  band: string;
+  diff: number;
+  scores: { nickname: string; score: number }[];
+};
+
+export type DisagreementPair = {
+  pair: string;
+  nicknames: [string, string];
+  avgDiff: number;
+  count: number;
+  topBands: BandDisagreement[];
+};
+
+/** For each pair of members, compute average absolute score difference + top disagreed bands. */
+export function getMostDisagreedPairs(concerts: Concert[]): DisagreementPair[] {
+  const pairs: DisagreementPair[] = [];
 
   for (let i = 0; i < MEMBERS.length; i++) {
     for (let j = i + 1; j < MEMBERS.length; j++) {
       const keyA = mainKey(MEMBERS[i].dbName);
       const keyB = mainKey(MEMBERS[j].dbName);
       const diffs: number[] = [];
+      const bandDiffs: BandDisagreement[] = [];
 
       for (const c of concerts) {
         if (!c.scores_revealed || c[keyA] == null || c[keyB] == null) continue;
-        diffs.push(Math.abs((c[keyA] as number) - (c[keyB] as number)));
+        const scoreA = c[keyA] as number;
+        const scoreB = c[keyB] as number;
+        const diff = Math.abs(scoreA - scoreB);
+        diffs.push(diff);
+        bandDiffs.push({
+          band: c.band_name,
+          diff,
+          scores: [
+            { nickname: MEMBERS[i].nickname, score: scoreA },
+            { nickname: MEMBERS[j].nickname, score: scoreB },
+          ],
+        });
       }
 
       if (diffs.length > 0) {
+        bandDiffs.sort((a, b) => b.diff - a.diff);
         pairs.push({
           pair: `${MEMBERS[i].nickname} vs ${MEMBERS[j].nickname}`,
+          nicknames: [MEMBERS[i].nickname, MEMBERS[j].nickname],
           avgDiff: diffs.reduce((a, b) => a + b, 0) / diffs.length,
           count: diffs.length,
+          topBands: bandDiffs.slice(0, 3),
         });
       }
     }

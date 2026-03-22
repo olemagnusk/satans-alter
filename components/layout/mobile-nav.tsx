@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, LayoutDashboard, CalendarDays, BarChart3, Users, Swords, Sparkles } from "lucide-react";
+import { Menu, X, LayoutDashboard, CalendarDays, BarChart3, Users, Swords } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n";
@@ -15,7 +15,6 @@ const navItems = [
   { href: "/statistics", label: t("nav.statistics"), icon: BarChart3 },
   { href: "/statistics-personal", label: t("nav.statistics_personal"), icon: Users },
   { href: "/head-to-head", label: t("nav.head_to_head"), icon: Swords },
-  { href: "/insights", label: t("nav.insights"), icon: Sparkles },
 ];
 
 export function MobileNav() {
@@ -85,17 +84,19 @@ export function MobileNav() {
           />
 
           {/* Content with slide-down */}
-          <div className="relative flex h-full flex-col px-6 py-6 animate-in slide-in-from-top-4 fade-in duration-300">
-            {/* Header: logo + close */}
-            <div className="flex items-center justify-between">
-              <Image
-                src="/branding/satans-alter-horizontal.png"
-                alt="Satans Alter"
-                width={1024}
-                height={202}
-                className="h-8 w-auto"
-                priority
-              />
+          <div className="relative flex h-full flex-col px-4 py-3 animate-in slide-in-from-top-4 fade-in duration-300">
+            {/* Header: logo + close — same height/position as topbar */}
+            <div className="flex h-10 items-center justify-between">
+              <Link href="/dashboard" onClick={close}>
+                <Image
+                  src="/branding/satans-alter-horizontal.png"
+                  alt="Satans Alter"
+                  width={1024}
+                  height={202}
+                  className="h-9 w-auto"
+                  priority
+                />
+              </Link>
               <button
                 type="button"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-coven-text-muted transition hover:bg-coven-active hover:text-coven-text"
@@ -137,16 +138,16 @@ export function MobileNav() {
 
             {/* Sign out */}
             <div
-              className="border-t border-coven-border pt-6 animate-in fade-in duration-500"
+              className="pt-6 animate-in fade-in duration-500"
               style={{ animationDelay: "250ms", animationFillMode: "backwards" }}
             >
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full py-2.5 text-sm"
+                className="h-10 w-full text-sm"
                 onClick={handleSignOut}
               >
-                {t("auth.sign_out")}
+                {t("auth.sign_out_full")}
               </Button>
             </div>
           </div>
