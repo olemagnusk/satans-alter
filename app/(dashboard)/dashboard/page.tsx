@@ -43,18 +43,23 @@ export default async function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>{t("dashboard.avg_main_score")}</CardTitle>
+            <CardTitle>{t("dashboard.avg_score")}</CardTitle>
           </CardHeader>
-          <CardContent className="text-2xl font-semibold">
-            {averageMain != null ? averageMain.toFixed(1) : "–"}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("dashboard.avg_support_score")}</CardTitle>
-          </CardHeader>
-          <CardContent className="text-2xl font-semibold">
-            {averageSupport != null ? averageSupport.toFixed(1) : "–"}
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-coven-text-muted">{t("stats_personal.band")}</p>
+                <p className="text-2xl font-semibold">
+                  {averageMain != null ? averageMain.toFixed(1) : "–"}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-coven-text-muted">{t("stats_personal.support")}</p>
+                <p className="text-2xl font-semibold">
+                  {averageSupport != null ? averageSupport.toFixed(1) : "–"}
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

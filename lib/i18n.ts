@@ -8,7 +8,7 @@ const nb: Record<string, string> = {
   // Navigation
   "nav.dashboard": "Dashboard",
   "nav.concerts": "Konserter",
-  "nav.statistics": "Stats: Band & scores",
+  "nav.statistics": "Stats: Bands & scores",
   "nav.statistics_personal": "Stats: Per person",
   "nav.insights": "Innsikt",
   "nav.login": "Logg inn",
@@ -36,6 +36,7 @@ const nb: Record<string, string> = {
   "dashboard.total_concerts": "Totalt antall konserter",
   "dashboard.avg_main_score": "Gjennomsnittsscore hovedband",
   "dashboard.avg_support_score": "Gjennomsnittsscore oppvarmingsband",
+  "dashboard.avg_score": "Gjennomsnittsscore",
   "dashboard.top_venues": "Topp tre konsertscener",
   "dashboard.visits": "besøk",
   "dashboard.no_data": "Ingen data ennå",
@@ -137,10 +138,11 @@ const nb: Record<string, string> = {
   "validation.date_required": "Dato er påkrevd",
 
   // Statistics page
-  "stats.title": "Statistikk",
+  "stats.title": "Stats: Bands & scores",
   "stats.total_concerts": "Totalt antall konserter",
   "stats.avg_main_score": "Gjennomsnittsscore hovedband",
   "stats.avg_support_score": "Gjennomsnittsscore oppvarming",
+  "stats.avg_score": "Gjennomsnittsscore",
   "stats.top_bands": "Topp band etter score",
   "stats.top_support": "Topp oppvarming etter score",
   "stats.avg_per_venue": "Gjennomsnittsscore per scene",
