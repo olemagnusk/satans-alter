@@ -178,6 +178,9 @@ const nb: Record<string, string> = {
   "stats_h2h.avg_diff": "snitt diff",
   "stats_h2h.concerts_count_singular": "konsert",
   "stats_h2h.concerts_count_plural": "konserter",
+  "stats_h2h.most_missed": "Flest missede konserter",
+  "stats_h2h.missed_count_singular": "konsert",
+  "stats_h2h.missed_count_plural": "konserter",
   "stats_h2h.no_data": "Ingen data",
 
   // Insights page

@@ -80,9 +80,44 @@ export function getMostDisagreedPairs(concerts: Concert[]): DisagreementPair[] {
   return pairs.sort((a, b) => b.avgDiff - a.avgDiff);
 }
 
+/** Count how many concerts each member was NOT in the attendees list. */
+export function getMostMissedConcerts(
+  concerts: Concert[]
+): { nickname: string; count: number; bands: string[] }[] {
+  // Build a set of all known names for each member so we match regardless of
+  // whether the DB stores "Pils", "Pilsen", or "Andreas".
+  const memberNames = MEMBERS.map((m) => {
+    const names = new Set([
+      m.nickname.toLowerCase(),
+      m.dbName.toLowerCase(),
+    ]);
+    // Add short aliases
+    const ALIASES: Record<string, string[]> = {
+      Pilsen: ["pils"],
+      Djen: ["djen"],
+      Krem: ["krem"],
+    };
+    for (const a of ALIASES[m.nickname] ?? []) names.add(a);
+    return { member: m, names };
+  });
+
+  return memberNames.map(({ member, names }) => {
+    const missed = concerts.filter((c) => {
+      if (!c.attendees || c.attendees.length === 0) return false;
+      return !c.attendees.some((a) => names.has(a.toLowerCase()));
+    });
+    return {
+      nickname: member.nickname,
+      count: missed.length,
+      bands: missed.map((c) => c.band_name),
+    };
+  }).sort((a, b) => b.count - a.count);
+}
+
 export function getHeadToHeadStats(concerts: Concert[]) {
   return {
     strictest: getStrictestScorer(concerts),
     disagreements: getMostDisagreedPairs(concerts),
+    mostMissed: getMostMissedConcerts(concerts),
   };
 }

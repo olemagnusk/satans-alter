@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 
 export default async function HeadToHeadPage() {
   const concerts = await listConcerts();
-  const { strictest, disagreements } = getHeadToHeadStats(concerts);
+  const { strictest, disagreements, mostMissed } = getHeadToHeadStats(concerts);
   const bookerScores = getBookerScore(concerts);
 
   return (
@@ -41,6 +41,39 @@ export default async function HeadToHeadPage() {
                   </p>
                   <p className="text-[11px] text-coven-text-muted">
                     {b.count} {b.count === 1 ? t("stats_h2h.concerts_count_singular") : t("stats_h2h.concerts_count_plural")}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Most missed concerts — KPI cards */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("stats_h2h.most_missed")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {mostMissed.length === 0 ? (
+            <p className="text-sm text-coven-text-muted">{t("stats_h2h.no_data")}</p>
+          ) : (
+            <div className="grid grid-cols-3 gap-4">
+              {mostMissed.map((m, i) => (
+                <div
+                  key={m.nickname}
+                  className={`rounded-lg border p-3 text-center ${
+                    i === 0
+                      ? "border-coven-primary/30 bg-coven-primary/5"
+                      : "border-coven-border bg-coven-card"
+                  }`}
+                >
+                  <p className="text-sm font-medium text-coven-text">{m.nickname}</p>
+                  <p className={`text-2xl font-bold tabular-nums ${i === 0 ? "text-coven-primary" : "text-coven-text"}`}>
+                    {m.count}
+                  </p>
+                  <p className="text-[11px] text-coven-text-muted">
+                    {m.count === 1 ? t("stats_h2h.missed_count_singular") : t("stats_h2h.missed_count_plural")}
                   </p>
                 </div>
               ))}

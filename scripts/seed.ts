@@ -70,10 +70,10 @@ const CONCERTS = [
     date: "2024-08-01",
     booker: "Djen",
     venue: "Vaterland",
-    attendees: ["Krem", "Djen"],
+    attendees: ["Pils", "Djen"],
     stand_ins: ["Endre"],
     score_main_andreas: 1, score_main_dennis: 2,
-    note: "Endre dekker for Magnus. Looser: 4, LK: 3",
+    note: "Endre dekker for Krem. Looser: 4, LK: 3",
   },
   {
     band_name: "Black Tusk",
