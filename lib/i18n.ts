@@ -171,6 +171,7 @@ const nb: Record<string, string> = {
 
   // Head to head statistics
   "nav.head_to_head": "Stats: Head to head",
+  "nav.alterets_bud": "Alterets Bud",
   "stats_h2h.title": "Stats: Head to head",
   "stats_h2h.strictest": "Strengeste scorer",
   "stats_h2h.kindest": "Snilleste scorer",

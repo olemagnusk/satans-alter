@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-import { LayoutDashboard, CalendarDays, BarChart3, Users, Swords } from "lucide-react";
+import { LayoutDashboard, CalendarDays, BarChart3, Users, Swords, Scroll } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n";
@@ -14,6 +14,7 @@ const navItems = [
   { href: "/statistics", label: t("nav.statistics"), icon: BarChart3 },
   { href: "/statistics-personal", label: t("nav.statistics_personal"), icon: Users },
   { href: "/head-to-head", label: t("nav.head_to_head"), icon: Swords },
+  { href: "/alterets-bud", label: t("nav.alterets_bud"), icon: Scroll },
 ];
 
 export function Sidebar() {
