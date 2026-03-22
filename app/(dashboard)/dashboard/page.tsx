@@ -5,12 +5,14 @@ import {
   getAverageMainScore,
   getAverageSupportScore,
   getTopVenues,
-  getTotals
+  getTotals,
+  getConcertsPerYear,
 } from "@/lib/stats/concerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardActions } from "@/components/dashboard/dashboard-actions";
 import { NextConcert } from "@/components/dashboard/next-concert";
 import { RecentConcerts } from "@/components/dashboard/recent-concerts";
+import { ConcertsPerYearChart } from "@/components/statistics/concerts-per-year-chart";
 import { t } from "@/lib/i18n";
 
 export default async function DashboardPage() {
@@ -23,6 +25,7 @@ export default async function DashboardPage() {
   const averageMain = getAverageMainScore(concerts);
   const averageSupport = getAverageSupportScore(concerts);
   const topVenues = getTopVenues(concerts, 3);
+  const concertsPerYear = getConcertsPerYear(concerts);
 
   const recent = concerts.slice(0, 5);
 
@@ -88,6 +91,14 @@ export default async function DashboardPage() {
               ))}
             </div>
           )}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("dashboard.concerts_per_year")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ConcertsPerYearChart data={concertsPerYear} />
         </CardContent>
       </Card>
       <RecentConcerts

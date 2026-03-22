@@ -7,6 +7,7 @@ import {
   getTopSupportBandsByScore,
   getAverageScorePerVenue,
   getScoreOverTime,
+  getBookerScore,
 } from "@/lib/stats/concerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExpandableList } from "@/components/statistics/expandable-list";
@@ -22,6 +23,7 @@ export default async function StatisticsPage() {
   const topSupport = getTopSupportBandsByScore(concerts);
   const venueScores = getAverageScorePerVenue(concerts);
   const scoreTimeline = getScoreOverTime(concerts);
+  const bookerScores = getBookerScore(concerts);
 
   return (
     <div className="space-y-4">
@@ -61,6 +63,23 @@ export default async function StatisticsPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Booker score */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("stats.booker_score")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ExpandableList
+            items={bookerScores.map((b) => ({
+              label: b.booker,
+              value: b.average.toFixed(1),
+              sub: `${b.count} ${b.count === 1 ? t("stats.concerts_count_singular") : t("stats.concerts_count_plural")}`,
+            }))}
+            emptyMessage={t("stats.no_scored")}
+          />
+        </CardContent>
+      </Card>
 
       {/* Top bands */}
       <Card>

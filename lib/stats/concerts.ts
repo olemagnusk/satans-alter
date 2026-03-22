@@ -136,6 +136,39 @@ export function getAverageScorePerVenue(concerts: Concert[], limit?: number) {
   return limit ? sorted.slice(0, limit) : sorted;
 }
 
+/** Average main score grouped by booker. */
+export function getBookerScore(concerts: Concert[]): { booker: string; average: number; count: number }[] {
+  const bookerScores = new Map<string, { total: number; count: number }>();
+  for (const c of concerts) {
+    if (!c.booker) continue;
+    const avg = concertAvgMain(c);
+    if (avg == null) continue;
+    const current = bookerScores.get(c.booker) ?? { total: 0, count: 0 };
+    current.total += avg;
+    current.count += 1;
+    bookerScores.set(c.booker, current);
+  }
+  return Array.from(bookerScores.entries())
+    .map(([booker, { total, count }]) => ({
+      booker,
+      average: total / count,
+      count,
+    }))
+    .sort((a, b) => b.average - a.average);
+}
+
+/** Count of concerts per year. */
+export function getConcertsPerYear(concerts: Concert[]): { year: number; count: number }[] {
+  const counts = new Map<number, number>();
+  for (const c of concerts) {
+    const year = parseInt(c.date.slice(0, 4), 10);
+    counts.set(year, (counts.get(year) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([year, count]) => ({ year, count }))
+    .sort((a, b) => a.year - b.year);
+}
+
 export type ScoreOverTimePoint = {
   date: string;
   month: string;
