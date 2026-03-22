@@ -66,18 +66,10 @@ export default function AlteretsBudPage() {
   return (
     <div className="flex flex-col items-center space-y-4">
       <Image
-        src="/illustrations/kniv.png"
+        src="/branding/satans_alter_N2.png"
         alt=""
-        width={30}
-        height={30}
-        className="opacity-[0.08]"
-      />
-
-      <Image
-        src="/branding/alterets_bud_y.png"
-        alt={t("nav.alterets_bud")}
         width={180}
-        height={60}
+        height={180}
       />
 
       <ol className="w-full space-y-4">
