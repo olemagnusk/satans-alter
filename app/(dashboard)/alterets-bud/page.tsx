@@ -4,60 +4,60 @@ import { t } from "@/lib/i18n";
 const BUD = [
   {
     numeral: "I",
-    title: "Neste rituale fastsettes før natten dør.",
-    summary: "Ingen forlater alteret uten at neste konsertdato er besluttet.",
+    title: "Neste rituale fastsettes før natten dør",
+    summary: "Ingen forlater Alteret uten at neste konsertdato er besluttet.",
   },
   {
     numeral: "II",
-    title: "Møt når portene åpnes.",
-    summary: "Frafall er et tegn på svak vilje.",
+    title: "Møt når portene åpnes",
+    summary: "Frafall er et tegn på svakhet.",
   },
   {
     numeral: "III",
-    title: "Ingen vanhellig spoiling.",
+    title: "Ingen vanhellig spoiling",
     summary:
       "Ingen avsløring av konserten skal finne sted i forkant. Kun den som har påkalt ritualet kjenner hva som venter.",
   },
   {
     numeral: "IV",
-    title: "Etterritualet er obligatorisk.",
+    title: "Etterritualet er obligatorisk",
     summary: "Konserten skal dissekeres over minst én pils.",
   },
   {
     numeral: "V",
-    title: "Den som påkaller, bærer ansvaret.",
+    title: "Den som påkaller, bærer ansvaret",
     summary:
       "Forslagsstiller følger opp med detaljer, billetter og gjennomføring.",
   },
   {
     numeral: "VI",
-    title: "Alteret skal ikke vokse for stort.",
+    title: "Alteret skal ikke vokse for stort",
     summary: "Ingen scener større enn Sentrum Scene skal tilbes.",
   },
   {
     numeral: "VII",
-    title: "Pilsen er hellig.",
+    title: "Pilsen er hellig",
     summary: "Den som nekter en pils, nekter fellesskapet.",
   },
   {
     numeral: "VIII",
-    title: "Det ukjente skal dyrkes.",
+    title: "Det ukjente skal dyrkes",
     summary:
-      "Nye sjangre og band skal oppsøkes – stagnasjon er for de døde.",
+      "Nye sjangre og band skal oppsøkes.\nStagnasjon er for de døde.",
   },
   {
     numeral: "IX",
-    title: "Supportbandet skal æres.",
+    title: "Supportbandet skal æres",
     summary: "Ingen ignorerer de som varmer opp flammen.",
   },
   {
     numeral: "X",
-    title: "Ingen forsvinning i skyggene.",
+    title: "Ingen forsvinning i skyggene",
     summary: "Den som trekker seg bort, skal gi tegn.",
   },
   {
     numeral: "XI",
-    title: "Ingen splid ved alteret.",
+    title: "Ingen splid ved Alteret",
     summary: "Uenigheter tas i mørket, ikke i flokken.",
   },
 ];
@@ -81,7 +81,7 @@ export default function AlteretsBudPage() {
             <p className="mt-2 text-center font-bold text-coven-text">
               {bud.title}
             </p>
-            <p className="mt-1 text-center text-sm text-coven-text-muted">
+            <p className="mt-1 whitespace-pre-line text-center text-sm text-coven-text-muted">
               {bud.summary}
             </p>
           </li>

@@ -24,7 +24,7 @@ export default async function DashboardLayout({
             alt=""
             width={30}
             height={30}
-            className="opacity-[0.08]"
+            className="opacity-[0.15]"
           />
         </div>
         <Footer />
