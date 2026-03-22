@@ -29,7 +29,7 @@ function CardTitle({
   return (
     <h3
       className={cn(
-        "font-[Georgia,_'Times_New_Roman',_Times,_serif] text-sm font-semibold uppercase leading-none tracking-[0.15em] text-coven-text",
+        "font-heading text-sm font-semibold leading-none tracking-tight text-coven-text",
         className
       )}
       {...props}
