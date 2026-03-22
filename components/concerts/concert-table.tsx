@@ -41,6 +41,7 @@ type SortColumn =
   | "support_score"
   | "attendees"
   | "standins"
+  | "genre"
   | "note";
 
 type SortDirection = "asc" | "desc";
@@ -57,6 +58,7 @@ const ALL_COLUMNS: { key: ColumnKey; label: string }[] = [
   { key: "support_score", label: t("col.support_score") },
   { key: "attendees", label: t("col.attendees") },
   { key: "standins", label: t("col.standins") },
+  { key: "genre", label: t("col.genre") },
   { key: "note", label: t("col.note") },
 ];
 
@@ -70,6 +72,7 @@ const DEFAULT_VISIBLE: Set<ColumnKey> = new Set([
   "support_score",
   "attendees",
   "standins",
+  "genre",
   "note",
 ]);
 
@@ -378,6 +381,9 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
         case "standins":
           cmp = (a.stand_ins?.length ?? 0) - (b.stand_ins?.length ?? 0);
           break;
+        case "genre":
+          cmp = (a.genre ?? "").localeCompare(b.genre ?? "");
+          break;
         case "note":
           cmp = (a.note ?? "").localeCompare(b.note ?? "");
           break;
@@ -629,16 +635,24 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     {isVisible("attendees") && (
                       <TableCell>
                         {concert.attendees?.length ? (
-                          <div className="flex flex-wrap gap-1">
-                            {concert.attendees.map((name) => (
-                              <span
-                                key={name}
-                                className="inline-flex rounded-full bg-coven-primary/10 px-2 py-0.5 text-xs font-medium text-coven-primary"
-                              >
-                                {displayName(name)}
-                              </span>
-                            ))}
-                          </div>
+                          expanded ? (
+                            <div className="space-y-0.5">
+                              {concert.attendees.map((name) => (
+                                <div key={name} className="text-xs text-coven-primary">
+                                  {displayName(name)}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="whitespace-nowrap text-xs">
+                              {concert.attendees
+                                .map((name) => {
+                                  const m = MEMBERS.find((m) => m.dbName === name || m.nickname === name);
+                                  return m ? m.initial : name.charAt(0).toUpperCase();
+                                })
+                                .join(", ")}
+                            </span>
+                          )
                         ) : (
                           "–"
                         )}
@@ -649,6 +663,11 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                         {concert.stand_ins?.length
                           ? concert.stand_ins.join(", ")
                           : "–"}
+                      </TableCell>
+                    )}
+                    {isVisible("genre") && (
+                      <TableCell>
+                        {concert.genre || "–"}
                       </TableCell>
                     )}
                     {isVisible("note") && (

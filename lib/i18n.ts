@@ -89,6 +89,7 @@ const nb: Record<string, string> = {
   "col.support_score": "Support score",
   "col.attendees": "Deltakere",
   "col.standins": "Vikarer",
+  "col.genre": "Sjanger",
   "col.note": "Notat",
   "col.year": "År",
 
