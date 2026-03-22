@@ -112,7 +112,7 @@ export function RecentConcerts({ concerts, cta }: { concerts: Concert[]; cta?: R
               <TableHead>
                 <TableRow>
                   <TableHeadCell className="normal-case">{t("col.date")}</TableHeadCell>
-                  <TableHeadCell className={`normal-case sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}`}>{t("col.band")}</TableHeadCell>
+                  <TableHeadCell className={`normal-case sticky left-0 z-10 bg-coven-bg ${stickyBandShadow}`}>{t("col.band")}</TableHeadCell>
                   <TableHeadCell className="normal-case">{t("col.support")}</TableHeadCell>
                   <TableHeadCell className="normal-case">{t("col.venue")}</TableHeadCell>
                   <TableHeadCell className="normal-case">{t("col.booker")}</TableHeadCell>

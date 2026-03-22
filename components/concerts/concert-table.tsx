@@ -550,7 +550,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
       <div onScroll={handleScroll} className="-mx-4 overflow-x-auto sm:mx-0">
         <div className="inline-block min-w-full align-middle">
           <Table>
-            <TableHead>
+            <TableHead className="bg-[#060607]">
               <TableRow>
                 {ALL_COLUMNS.filter((c) => isVisible(c.key)).map((col) => (
                   <SortableHeader
@@ -560,7 +560,7 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     sortColumn={sortColumn}
                     sortDirection={sortDirection}
                     onSort={handleSort}
-                    className={col.key === "band" ? `sticky left-0 z-10 bg-coven-surface ${stickyBandShadow}` : undefined}
+                    className={col.key === "band" ? `sticky left-0 z-10 bg-[#060607] ${stickyBandShadow}` : undefined}
                   />
                 ))}
                 <TableHeadCell className="w-8" />
