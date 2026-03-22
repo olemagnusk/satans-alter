@@ -18,7 +18,7 @@ function CardHeader({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("mb-2 flex flex-col space-y-1", className)} {...props} />
+    <div className={cn("mb-4 flex flex-col space-y-1", className)} {...props} />
   );
 }
 

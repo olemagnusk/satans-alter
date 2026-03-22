@@ -30,9 +30,9 @@ export function ExpandableList({ items, previewCount = 5, emptyMessage = "Ingen 
       <ul className="divide-y divide-coven-border">
         {visible.map((item, i) => (
           <li key={item.label} className="flex items-center justify-between py-2 first:pt-0 last:pb-0">
-            <div className="flex items-baseline gap-2">
+            <div className="flex min-w-0 items-baseline gap-2">
               <span className="text-xs tabular-nums text-coven-text-muted">{i + 1}.</span>
-              <span className="text-sm text-coven-text">{item.label}</span>
+              <span className="truncate text-sm text-coven-text">{item.label}</span>
               {item.sub && (
                 <span className="text-xs text-coven-text-muted">({item.sub})</span>
               )}

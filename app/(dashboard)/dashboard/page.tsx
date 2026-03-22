@@ -59,7 +59,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
       <Card>
-        <CardHeader className="mb-4">
+        <CardHeader>
           <CardTitle>{t("dashboard.top_venues")}</CardTitle>
         </CardHeader>
         <CardContent>

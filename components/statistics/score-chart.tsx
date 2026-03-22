@@ -43,20 +43,9 @@ function formatDate(dateStr: string): string {
 export function ScoreChart({ data }: Props) {
   const currentYear = new Date().getFullYear();
   const years = useMemo(() => [...new Set(data.map((d) => d.year))].sort(), [data]);
-  const [activeYears, setActiveYears] = useState<Set<number>>(new Set([currentYear]));
+  const [activeYear, setActiveYear] = useState<number>(currentYear);
+  const activeYears = useMemo(() => new Set([activeYear]), [activeYear]);
   const [selectedPoint, setSelectedPoint] = useState<ScoreOverTimePoint | null>(null);
-
-  function toggleYear(year: number) {
-    setActiveYears((prev) => {
-      const next = new Set(prev);
-      if (next.has(year)) {
-        next.delete(year);
-      } else {
-        next.add(year);
-      }
-      return next;
-    });
-  }
 
   /* Build per-year data arrays and a combined dataset for the area chart.
      We normalize dates to day-of-year so multiple years overlay on the same Jan-Dec axis. */
@@ -125,7 +114,7 @@ export function ScoreChart({ data }: Props) {
                   : "border-coven-border text-coven-text-muted hover:border-coven-text-muted"
               }`}
               style={active ? { backgroundColor: color } : undefined}
-              onClick={() => toggleYear(year)}
+              onClick={() => setActiveYear(year)}
             >
               {year}
             </button>

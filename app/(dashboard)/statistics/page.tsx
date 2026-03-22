@@ -67,7 +67,7 @@ export default async function StatisticsPage() {
             items={topBands.map((b) => ({
               label: b.band,
               value: b.average.toFixed(1),
-              sub: `${b.count} ${t("stats.concerts_count")}`,
+              sub: `${b.count} ${b.count === 1 ? t("stats.concerts_count_singular") : t("stats.concerts_count_plural")}`,
             }))}
             emptyMessage={t("stats.no_scored")}
           />
@@ -84,7 +84,7 @@ export default async function StatisticsPage() {
             items={topSupport.map((b) => ({
               label: b.band,
               value: b.average.toFixed(1),
-              sub: `${b.count} ${t("stats.concerts_count")}`,
+              sub: `${b.count} ${b.count === 1 ? t("stats.concerts_count_singular") : t("stats.concerts_count_plural")}`,
             }))}
             emptyMessage={t("stats.no_scored")}
           />
@@ -101,7 +101,7 @@ export default async function StatisticsPage() {
             items={venueScores.map((v) => ({
               label: v.venue,
               value: v.average.toFixed(1),
-              sub: `${v.count} ${t("stats.concerts_count")}`,
+              sub: `${v.count} ${v.count === 1 ? t("stats.concerts_count_singular") : t("stats.concerts_count_plural")}`,
             }))}
             emptyMessage={t("stats.no_scored")}
           />

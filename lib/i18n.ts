@@ -33,8 +33,8 @@ const nb: Record<string, string> = {
   // Dashboard page
   "dashboard.title": "Dashboard",
   "dashboard.total_concerts": "Totalt antall konserter",
-  "dashboard.avg_main_score": "Gjennomsnitt score hovedband",
-  "dashboard.avg_support_score": "Gjennomsnitt score oppvarmingsband",
+  "dashboard.avg_main_score": "Gjennomsnittsscore hovedband",
+  "dashboard.avg_support_score": "Gjennomsnittsscore oppvarmingsband",
   "dashboard.top_venues": "Topp tre konsertscener",
   "dashboard.visits": "besøk",
   "dashboard.no_data": "Ingen data ennå",
@@ -134,14 +134,15 @@ const nb: Record<string, string> = {
   // Statistics page
   "stats.title": "Statistikk",
   "stats.total_concerts": "Totalt antall konserter",
-  "stats.avg_main_score": "Gjennomsnitt score hovedband",
-  "stats.avg_support_score": "Gjennomsnitt score oppvarming",
-  "stats.top_bands": "Topp band",
-  "stats.top_support": "Topp oppvarming",
-  "stats.avg_per_venue": "Gjennomsnitt score per scene",
+  "stats.avg_main_score": "Gjennomsnittsscore hovedband",
+  "stats.avg_support_score": "Gjennomsnittsscore oppvarming",
+  "stats.top_bands": "Topp band etter score",
+  "stats.top_support": "Topp oppvarming etter score",
+  "stats.avg_per_venue": "Gjennomsnittsscore per scene",
   "stats.score_over_time": "Main band gjennomsnittsscore",
   "stats.no_scored": "Ingen konserter med score ennå.",
-  "stats.concerts_count": "konserter",
+  "stats.concerts_count_singular": "konsert",
+  "stats.concerts_count_plural": "konserter",
 
   // Insights page
   "insights.title": "Innsikt",
@@ -159,9 +160,9 @@ const nb: Record<string, string> = {
 
   // Score flow
   "score.title": "Legg til score",
-  "score.no_concert": "Ingen konsert tilgjengelig for scoring",
+  "score.no_concert": "Ingen konserter tilgjengelig for scoring din møkkamann",
   "score.no_concert_desc": "Score kan kun legges til innen 12 timer etter at en konsert er opprettet.",
-  "score.back_to_dashboard": "Tilbake til dashboard",
+  "score.back_to_dashboard": "Tilbake til Dashboard",
   "score.pick_member": "Hvem er du?",
   "score.rate_support": "Score oppvarming",
   "score.rate_main": "Score hovedband",
