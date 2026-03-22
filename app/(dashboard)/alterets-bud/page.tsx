@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 const BUD = [
   {
     numeral: "I",
-    title: "Neste rituale skal fastsettes før natten dør.",
+    title: "Neste rituale fastsettes før natten dør.",
     summary: "Ingen forlater alteret uten at neste konsertdato er besluttet.",
   },
   {
@@ -75,10 +75,10 @@ export default function AlteretsBudPage() {
       <ol className="w-full space-y-4">
         {BUD.map((bud, i) => (
           <li key={i} className="border-b border-coven-border pb-4 last:border-0">
-            <p className="text-center font-[Georgia,_'Times_New_Roman',_Times,_serif] text-xs tracking-[0.3em] text-coven-text-muted">
+            <p className="text-center font-[Georgia,_'Times_New_Roman',_Times,_serif] text-sm tracking-[0.3em] text-coven-text-muted">
               {bud.numeral}
             </p>
-            <p className="text-center font-bold text-coven-text">
+            <p className="mt-2 text-center font-bold text-coven-text">
               {bud.title}
             </p>
             <p className="mt-1 text-center text-sm text-coven-text-muted">
