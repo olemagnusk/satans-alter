@@ -12,6 +12,7 @@ const LABEL_MAP: Record<string, string> = {
   statistics: t("nav.statistics"),
   "statistics-personal": t("nav.statistics_personal"),
   "head-to-head": t("nav.head_to_head"),
+  "alterets-bud": t("nav.alterets_bud"),
   login: t("nav.login"),
 };
 
