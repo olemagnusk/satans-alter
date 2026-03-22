@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -26,7 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${cinzel.variable} ${inter.variable}`}>
-      <body className="bg-coven-bg font-body text-coven-text">{children}</body>
+      <body className="bg-coven-bg font-body text-coven-text">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
