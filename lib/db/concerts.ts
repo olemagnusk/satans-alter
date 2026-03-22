@@ -69,16 +69,18 @@ export async function deleteConcert(id: string): Promise<void> {
 }
 
 /**
- * Find the most recent concert that doesn't have all scores filled.
+ * Find the most recent concert that doesn't have all scores filled
+ * AND was created within the last 12 hours.
  * Used by the "Legg til score" flow.
  */
 export async function getLatestUnscoredConcert(): Promise<Concert | null> {
   const { rows } = await sql`
     SELECT * FROM concerts
-    WHERE score_main_andreas IS NULL
+    WHERE (score_main_andreas IS NULL
        OR score_main_dennis IS NULL
-       OR score_main_magnus IS NULL
-    ORDER BY date DESC
+       OR score_main_magnus IS NULL)
+      AND created_at >= NOW() - INTERVAL '12 hours'
+    ORDER BY created_at DESC
     LIMIT 1
   `;
   return (rows[0] as Concert) ?? null;

@@ -72,7 +72,7 @@ export function getMostFrequentVenue(concerts: Concert[]) {
   return best;
 }
 
-export function getTopBandsByScore(concerts: Concert[], limit = 5) {
+export function getTopBandsByScore(concerts: Concert[], limit?: number) {
   const bandScores = new Map<string, { total: number; count: number }>();
   for (const c of concerts) {
     if (!c.band_name) continue;
@@ -83,12 +83,76 @@ export function getTopBandsByScore(concerts: Concert[], limit = 5) {
     current.count += 1;
     bandScores.set(c.band_name, current);
   }
-  return Array.from(bandScores.entries())
+  const sorted = Array.from(bandScores.entries())
     .map(([band, { total, count }]) => ({
       band,
       average: total / count,
       count
     }))
-    .sort((a, b) => b.average - a.average)
-    .slice(0, limit);
+    .sort((a, b) => b.average - a.average);
+  return limit ? sorted.slice(0, limit) : sorted;
+}
+
+export function getTopSupportBandsByScore(concerts: Concert[], limit?: number) {
+  const bandScores = new Map<string, { total: number; count: number }>();
+  for (const c of concerts) {
+    const name = c.support_band_1;
+    if (!name) continue;
+    const avg = concertAvgSupport(c);
+    if (avg == null) continue;
+    const current = bandScores.get(name) ?? { total: 0, count: 0 };
+    current.total += avg;
+    current.count += 1;
+    bandScores.set(name, current);
+  }
+  const sorted = Array.from(bandScores.entries())
+    .map(([band, { total, count }]) => ({
+      band,
+      average: total / count,
+      count
+    }))
+    .sort((a, b) => b.average - a.average);
+  return limit ? sorted.slice(0, limit) : sorted;
+}
+
+export function getAverageScorePerVenue(concerts: Concert[], limit?: number) {
+  const venueScores = new Map<string, { total: number; count: number }>();
+  for (const c of concerts) {
+    if (!c.venue) continue;
+    const avg = concertAvgMain(c);
+    if (avg == null) continue;
+    const current = venueScores.get(c.venue) ?? { total: 0, count: 0 };
+    current.total += avg;
+    current.count += 1;
+    venueScores.set(c.venue, current);
+  }
+  const sorted = Array.from(venueScores.entries())
+    .map(([venue, { total, count }]) => ({
+      venue,
+      average: total / count,
+      count
+    }))
+    .sort((a, b) => b.average - a.average);
+  return limit ? sorted.slice(0, limit) : sorted;
+}
+
+export type ScoreOverTimePoint = {
+  date: string;
+  month: string;
+  year: number;
+  band: string;
+  avgScore: number;
+};
+
+export function getScoreOverTime(concerts: Concert[]): ScoreOverTimePoint[] {
+  return concerts
+    .filter((c) => concertAvgMain(c) != null)
+    .map((c) => ({
+      date: c.date,
+      month: c.date.slice(0, 7), // YYYY-MM
+      year: parseInt(c.date.slice(0, 4), 10),
+      band: c.band_name,
+      avgScore: concertAvgMain(c)!,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
 }

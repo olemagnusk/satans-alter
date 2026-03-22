@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { MEMBERS as MEMBER_LIST, displayName, toDbName } from "@/lib/members";
 import { updateConcertAction, deleteConcertAction } from "@/app/(dashboard)/concerts/new/actions";
 import { t } from "@/lib/i18n";
+import { DatePicker, VenueSelect, StandinsSelect } from "@/components/concerts/form-fields";
 import type { Concert } from "@/lib/validation/concert";
 
 type Props = {
@@ -201,8 +202,8 @@ export function EditConcertDialog({ concert }: Props) {
         </PopoverContent>
       </Popover>
 
-      {/* Edit dialog */}
-      <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }}>
+      {/* Edit dialog — modal={false} so Popover dropdowns inside work correctly */}
+      <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }} modal={false}>
         <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto bg-coven-surface text-coven-text">
           <DialogHeader>
             <DialogTitle>{t("form.edit_concert")}</DialogTitle>
@@ -216,7 +217,7 @@ export function EditConcertDialog({ concert }: Props) {
               </div>
               <div className="space-y-1">
                 <Label>{t("form.date")}</Label>
-                <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                <DatePicker value={date} onChange={setDate} />
               </div>
               <div className="space-y-1">
                 <Label>{t("form.support_band_1")}</Label>
@@ -224,7 +225,7 @@ export function EditConcertDialog({ concert }: Props) {
               </div>
               <div className="space-y-1">
                 <Label>{t("form.venue")}</Label>
-                <Input value={venue} onChange={(e) => setVenue(e.target.value)} />
+                <VenueSelect value={venue} onChange={setVenue} />
               </div>
               <div className="space-y-1">
                 <Label>{t("form.booker")}</Label>
@@ -269,18 +270,7 @@ export function EditConcertDialog({ concert }: Props) {
 
             <div className="space-y-1">
               <Label>{t("form.standins")}</Label>
-              <Input
-                value={standIns.join(", ")}
-                onChange={(e) =>
-                  setStandIns(
-                    e.target.value
-                      .split(",")
-                      .map((s) => s.trim())
-                      .filter(Boolean)
-                  )
-                }
-                placeholder="Kommaseparerte navn..."
-              />
+              <StandinsSelect value={standIns} onChange={setStandIns} />
             </div>
 
             <div className="space-y-1">

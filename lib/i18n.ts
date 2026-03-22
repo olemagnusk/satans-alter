@@ -134,10 +134,14 @@ const nb: Record<string, string> = {
   // Statistics page
   "stats.title": "Statistikk",
   "stats.total_concerts": "Totalt antall konserter",
-  "stats.total_attendees": "Totalt antall deltakere",
-  "stats.avg_main_score": "Gjennomsnittlig hovedscore",
-  "stats.top_bands": "Topp band etter gjennomsnittsscore",
+  "stats.avg_main_score": "Gjennomsnitt score hovedband",
+  "stats.avg_support_score": "Gjennomsnitt score oppvarming",
+  "stats.top_bands": "Topp band",
+  "stats.top_support": "Topp oppvarming",
+  "stats.avg_per_venue": "Gjennomsnitt score per scene",
+  "stats.score_over_time": "Main band gjennomsnittsscore",
   "stats.no_scored": "Ingen konserter med score ennå.",
+  "stats.concerts_count": "konserter",
 
   // Insights page
   "insights.title": "Innsikt",
@@ -155,8 +159,8 @@ const nb: Record<string, string> = {
 
   // Score flow
   "score.title": "Legg til score",
-  "score.no_concert": "Ingen konsert å score",
-  "score.no_concert_desc": "Alle konserter har allerede fått score.",
+  "score.no_concert": "Ingen konsert tilgjengelig for scoring",
+  "score.no_concert_desc": "Score kan kun legges til innen 12 timer etter at en konsert er opprettet.",
   "score.back_to_dashboard": "Tilbake til dashboard",
   "score.pick_member": "Hvem er du?",
   "score.rate_support": "Score oppvarming",
