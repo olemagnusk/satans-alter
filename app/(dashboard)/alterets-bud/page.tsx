@@ -75,8 +75,11 @@ export default function AlteretsBudPage() {
       <ol className="w-full space-y-4">
         {BUD.map((bud, i) => (
           <li key={i} className="border-b border-coven-border pb-4 last:border-0">
+            <p className="text-center font-[Georgia,_'Times_New_Roman',_Times,_serif] text-xs tracking-[0.3em] text-coven-text-muted">
+              {bud.numeral}
+            </p>
             <p className="text-center font-bold text-coven-text">
-              {bud.numeral}. {bud.title}
+              {bud.title}
             </p>
             <p className="mt-1 text-center text-sm text-coven-text-muted">
               {bud.summary}
@@ -85,13 +88,6 @@ export default function AlteretsBudPage() {
         ))}
       </ol>
 
-      <Image
-        src="/illustrations/kniv.png"
-        alt=""
-        width={30}
-        height={30}
-        className="opacity-[0.08]"
-      />
     </div>
   );
 }
