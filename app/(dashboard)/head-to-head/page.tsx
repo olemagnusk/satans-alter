@@ -2,7 +2,6 @@ import { listConcerts } from "@/lib/db/concerts";
 import { getHeadToHeadStats } from "@/lib/stats/headtohead";
 import { getBookerScore } from "@/lib/stats/concerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExpandableList } from "@/components/statistics/expandable-list";
 import { DisagreementList } from "@/components/statistics/disagreement-list";
 import { t } from "@/lib/i18n";
 
@@ -17,20 +16,36 @@ export default async function HeadToHeadPage() {
         {t("stats_h2h.title")}
       </h2>
 
-      {/* Booker score */}
+      {/* Booker score — KPI cards */}
       <Card>
         <CardHeader>
           <CardTitle>{t("stats.booker_score")}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ExpandableList
-            items={bookerScores.map((b) => ({
-              label: b.booker,
-              value: b.average.toFixed(1),
-              sub: `${b.count} ${b.count === 1 ? t("stats_h2h.concerts_count_singular") : t("stats_h2h.concerts_count_plural")}`,
-            }))}
-            emptyMessage={t("stats_h2h.no_data")}
-          />
+          {bookerScores.length === 0 ? (
+            <p className="text-sm text-coven-text-muted">{t("stats_h2h.no_data")}</p>
+          ) : (
+            <div className="grid grid-cols-3 gap-4">
+              {bookerScores.map((b, i) => (
+                <div
+                  key={b.booker}
+                  className={`rounded-lg border p-3 text-center ${
+                    i === 0
+                      ? "border-coven-primary/30 bg-coven-primary/5"
+                      : "border-coven-border bg-coven-card"
+                  }`}
+                >
+                  <p className="text-sm font-medium text-coven-text">{b.booker}</p>
+                  <p className={`text-2xl font-bold tabular-nums ${i === 0 ? "text-coven-primary" : "text-coven-text"}`}>
+                    {b.average.toFixed(1)}
+                  </p>
+                  <p className="text-[11px] text-coven-text-muted">
+                    {b.count} {b.count === 1 ? t("stats_h2h.concerts_count_singular") : t("stats_h2h.concerts_count_plural")}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
 
