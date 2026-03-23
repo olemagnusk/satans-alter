@@ -6,6 +6,7 @@ import {
   submitMemberScores,
   getScoreStatus,
   revealScores,
+  revertScores,
 } from "@/lib/db/concerts";
 import type { Concert } from "@/lib/validation/concert";
 
@@ -42,6 +43,15 @@ export async function getScoreStatusAction(concertId: string): Promise<{
 
 export async function revealScoresAction(concertId: string): Promise<{ success: boolean }> {
   await revealScores(concertId);
+  revalidatePath("/concerts");
+  revalidatePath("/dashboard");
+  revalidatePath("/statistics");
+  revalidatePath("/insights");
+  return { success: true };
+}
+
+export async function revertScoresAction(concertId: string): Promise<{ success: boolean }> {
+  await revertScores(concertId);
   revalidatePath("/concerts");
   revalidatePath("/dashboard");
   revalidatePath("/statistics");

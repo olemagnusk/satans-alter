@@ -91,6 +91,7 @@ export async function getLatestUnscoredConcert(): Promise<Concert | null> {
 /**
  * Submit scores for a single member.
  * Only updates the columns for the specified member (by dbName).
+ * Uses a WHERE guard to prevent overwriting an existing score.
  */
 export async function submitMemberScores(
   concertId: string,
@@ -103,21 +104,21 @@ export async function submitMemberScores(
       UPDATE concerts SET
         score_main_andreas = ${mainScore},
         score_support_andreas = ${supportScore}
-      WHERE id = ${concertId}
+      WHERE id = ${concertId} AND score_main_andreas IS NULL
     `;
   } else if (member === "dennis") {
     await sql`
       UPDATE concerts SET
         score_main_dennis = ${mainScore},
         score_support_dennis = ${supportScore}
-      WHERE id = ${concertId}
+      WHERE id = ${concertId} AND score_main_dennis IS NULL
     `;
   } else {
     await sql`
       UPDATE concerts SET
         score_main_magnus = ${mainScore},
         score_support_magnus = ${supportScore}
-      WHERE id = ${concertId}
+      WHERE id = ${concertId} AND score_main_magnus IS NULL
     `;
   }
 }
@@ -149,4 +150,22 @@ export async function getScoreStatus(concertId: string): Promise<{
  */
 export async function revealScores(concertId: string): Promise<void> {
   await sql`UPDATE concerts SET scores_revealed = TRUE WHERE id = ${concertId}`;
+}
+
+/**
+ * Clear all member scores for a concert (revert).
+ * Resets all six score columns to NULL and scores_revealed to FALSE.
+ */
+export async function revertScores(concertId: string): Promise<void> {
+  await sql`
+    UPDATE concerts SET
+      score_main_andreas = NULL,
+      score_main_dennis = NULL,
+      score_main_magnus = NULL,
+      score_support_andreas = NULL,
+      score_support_dennis = NULL,
+      score_support_magnus = NULL,
+      scores_revealed = FALSE
+    WHERE id = ${concertId}
+  `;
 }

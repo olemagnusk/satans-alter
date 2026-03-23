@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Clock, Star, ArrowLeft } from "lucide-react";
+import { Check, Clock, Star, ArrowLeft, X, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MEMBERS, displayName } from "@/lib/members";
@@ -11,6 +11,7 @@ import {
   submitScoresAction,
   getScoreStatusAction,
   revealScoresAction,
+  revertScoresAction,
 } from "@/app/(dashboard)/score/actions";
 import type { Concert } from "@/lib/validation/concert";
 
@@ -28,7 +29,7 @@ function ScoreButton({
   return (
     <button
       type="button"
-      className={`flex h-14 w-14 items-center justify-center rounded-xl text-lg font-bold transition ${
+      className={`flex h-12 w-12 items-center justify-center rounded-xl text-base font-bold transition sm:h-14 sm:w-14 sm:text-lg ${
         selected
           ? "bg-coven-primary text-white scale-110 shadow-lg shadow-coven-primary/30"
           : "bg-coven-active text-coven-text-muted hover:bg-coven-border hover:text-coven-text"
@@ -57,7 +58,7 @@ function ScoreSelector({
         <p className="text-sm text-coven-text-muted">{label}</p>
         <h3 className="mt-1 text-xl font-bold text-coven-text">{bandName}</h3>
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-2 sm:gap-3">
         {[1, 2, 3, 4, 5, 6].map((n) => (
           <ScoreButton
             key={n}
@@ -126,8 +127,53 @@ function WaitingScreen({
   onReveal: () => void;
   revealLoading: boolean;
 }) {
-  if (revealed) return null; // handled by results step
+  if (revealed) return null;
 
+  // Non-booker: show thank you message instead of full status
+  if (!isBooker) {
+    return (
+      <div className="flex flex-col items-center gap-6">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-coven-active">
+          <Check className="h-8 w-8 text-coven-primary" />
+        </div>
+        <div className="text-center">
+          <h2 className="text-xl font-bold text-coven-text">
+            {t("score.thank_you_title")}
+          </h2>
+          <p className="mt-1 text-sm text-coven-text-muted">
+            {t("score.thank_you_desc")}
+          </p>
+        </div>
+        <div className="w-full max-w-xs space-y-2">
+          {MEMBERS.map((m) => {
+            const done = submitted[m.dbName.toLowerCase() as keyof typeof submitted];
+            return (
+              <div
+                key={m.dbName}
+                className={`flex items-center justify-between rounded-lg px-4 py-3 ${
+                  done ? "bg-coven-primary/10" : "bg-coven-active"
+                }`}
+              >
+                <span className={`font-medium ${done ? "text-coven-primary" : "text-coven-text-muted"}`}>
+                  {m.nickname}
+                </span>
+                {done ? (
+                  <Check className="h-4 w-4 text-coven-primary" />
+                ) : (
+                  <span className="text-xs text-coven-text-muted">{t("score.waiting_for")}</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        {allSubmitted && (
+          <p className="text-sm text-coven-text-muted">{t("score.waiting_booker")}</p>
+        )}
+      </div>
+    );
+  }
+
+  // Booker: show full status with reveal button
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-coven-active">
@@ -169,7 +215,7 @@ function WaitingScreen({
         })}
       </div>
 
-      {allSubmitted && isBooker && (
+      {allSubmitted && (
         <Button
           onClick={onReveal}
           disabled={revealLoading}
@@ -178,21 +224,51 @@ function WaitingScreen({
           {t("score.reveal_button")}
         </Button>
       )}
-      {allSubmitted && !isBooker && (
-        <p className="text-sm text-coven-text-muted">{t("score.waiting_booker")}</p>
-      )}
     </div>
+  );
+}
+
+function ScoreCard({
+  title,
+  scores,
+}: {
+  title: string;
+  scores: { nickname: string; score: number | null }[];
+}) {
+  function avg(vals: (number | null)[]): string {
+    const valid = vals.filter((s): s is number => s != null);
+    if (valid.length === 0) return "–";
+    return (valid.reduce((a, b) => a + b, 0) / valid.length).toFixed(1);
+  }
+
+  return (
+    <Card className="w-full max-w-xs">
+      <CardContent className="pt-4">
+        <h3 className="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-coven-text-muted">
+          {title}
+        </h3>
+        <div className="space-y-2">
+          {scores.map((s) => (
+            <div key={s.nickname} className="flex items-center justify-between rounded-lg bg-coven-active px-4 py-2.5">
+              <span className="text-sm font-medium text-coven-text">{s.nickname}</span>
+              <span className="text-lg font-bold text-coven-primary">{s.score ?? "–"}</span>
+            </div>
+          ))}
+          <div className="flex items-center justify-between rounded-lg bg-coven-primary/10 px-4 py-2.5">
+            <span className="text-sm font-semibold text-coven-primary">{t("score.average")}</span>
+            <span className="text-lg font-bold text-coven-primary">
+              {avg(scores.map((s) => s.score))}
+            </span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
 function ResultsScreen({ concert }: { concert: Concert }) {
   const router = useRouter();
-
-  function avg(scores: (number | null)[]): string {
-    const valid = scores.filter((s): s is number => s != null);
-    if (valid.length === 0) return "–";
-    return (valid.reduce((a, b) => a + b, 0) / valid.length).toFixed(1);
-  }
+  const [resultsStep, setResultsStep] = useState<"support" | "main">("support");
 
   const mainScores = [
     { nickname: "Pilsen", score: concert.score_main_andreas },
@@ -208,82 +284,65 @@ function ResultsScreen({ concert }: { concert: Concert }) {
 
   const hasSupport = supportScores.some((s) => s.score != null);
 
+  // If no support band, skip straight to main
+  const showSupport = hasSupport && resultsStep === "support";
+  const showMain = !hasSupport || resultsStep === "main";
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="text-center">
-        <h2 className="text-xl font-bold text-coven-text">{concert.band_name}</h2>
+        <h2 className="text-xl font-bold text-coven-text">
+          {showSupport ? concert.support_band_1 : concert.band_name}
+        </h2>
         <p className="text-sm text-coven-text-muted">
           {concert.date.split("-").reverse().join(".")}
           {concert.venue ? ` — ${concert.venue}` : ""}
         </p>
       </div>
 
-      {/* Main band scores */}
-      <Card className="w-full max-w-xs">
-        <CardContent className="pt-4">
-          <h3 className="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-coven-text-muted">
-            {t("score.results_main")}
-          </h3>
-          <div className="space-y-2">
-            {mainScores.map((s) => (
-              <div key={s.nickname} className="flex items-center justify-between rounded-lg bg-coven-active px-4 py-2.5">
-                <span className="text-sm font-medium text-coven-text">{s.nickname}</span>
-                <span className="text-lg font-bold text-coven-primary">{s.score ?? "–"}</span>
-              </div>
-            ))}
-            <div className="flex items-center justify-between rounded-lg bg-coven-primary/10 px-4 py-2.5">
-              <span className="text-sm font-semibold text-coven-primary">{t("score.average")}</span>
-              <span className="text-lg font-bold text-coven-primary">
-                {avg(mainScores.map((s) => s.score))}
-              </span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Support band scores */}
-      {hasSupport && (
-        <Card className="w-full max-w-xs">
-          <CardContent className="pt-4">
-            <h3 className="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-coven-text-muted">
-              {t("score.results_support")}
-              {concert.support_band_1 ? ` — ${concert.support_band_1}` : ""}
-            </h3>
-            <div className="space-y-2">
-              {supportScores.map((s) => (
-                <div key={s.nickname} className="flex items-center justify-between rounded-lg bg-coven-active px-4 py-2.5">
-                  <span className="text-sm font-medium text-coven-text">{s.nickname}</span>
-                  <span className="text-lg font-bold text-coven-primary">{s.score ?? "–"}</span>
-                </div>
-              ))}
-              <div className="flex items-center justify-between rounded-lg bg-coven-primary/10 px-4 py-2.5">
-                <span className="text-sm font-semibold text-coven-primary">{t("score.average")}</span>
-                <span className="text-lg font-bold text-coven-primary">
-                  {avg(supportScores.map((s) => s.score))}
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {showSupport && (
+        <>
+          <ScoreCard
+            title={`${t("score.results_support")} — ${concert.support_band_1}`}
+            scores={supportScores}
+          />
+          <Button
+            onClick={() => setResultsStep("main")}
+            className="w-full max-w-xs"
+          >
+            Gå til {concert.band_name}
+          </Button>
+        </>
       )}
 
-      <Button
-        onClick={() => router.push("/dashboard")}
-        className="w-full max-w-xs"
-      >
-        {t("score.done")}
-      </Button>
+      {showMain && (
+        <>
+          <ScoreCard
+            title={t("score.results_main")}
+            scores={mainScores}
+          />
+          <Button
+            onClick={() => router.push("/dashboard")}
+            className="w-full max-w-xs"
+          >
+            {t("score.done")}
+          </Button>
+        </>
+      )}
     </div>
   );
 }
 
 export function ScoreFlow({ concert }: { concert: Concert }) {
+  const router = useRouter();
   const [step, setStep] = useState<Step>("pick-member");
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
   const [supportScore, setSupportScore] = useState<number | null>(null);
   const [mainScore, setMainScore] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [revealLoading, setRevealLoading] = useState(false);
+  const [revertLoading, setRevertLoading] = useState(false);
+  const [showRevertConfirm, setShowRevertConfirm] = useState(false);
 
   // Polling state
   const [submitted, setSubmitted] = useState({
@@ -319,12 +378,16 @@ export function ScoreFlow({ concert }: { concert: Concert }) {
     return () => clearInterval(interval);
   }, [step, pollStatus]);
 
-  // Auto-advance to results when revealed
+  // Auto-advance when revealed: booker sees results, others go to dashboard
   useEffect(() => {
     if (revealed && step === "waiting") {
-      setStep("results");
+      if (isBooker) {
+        setStep("results");
+      } else {
+        router.push("/dashboard");
+      }
     }
-  }, [revealed, step]);
+  }, [revealed, step, isBooker, router]);
 
   function handlePickMember(dbName: string) {
     setSelectedMember(dbName);
@@ -370,8 +433,81 @@ export function ScoreFlow({ concert }: { concert: Concert }) {
     }
   }
 
+  async function handleRevert() {
+    setRevertLoading(true);
+    try {
+      await revertScoresAction(concert.id);
+      // Reset local state
+      setSubmitted({ andreas: false, dennis: false, magnus: false });
+      setAllSubmitted(false);
+      setRevealed(false);
+      setSupportScore(null);
+      setMainScore(null);
+      setSelectedMember(null);
+      setShowRevertConfirm(false);
+      setStep("pick-member");
+    } catch {
+      // error
+    } finally {
+      setRevertLoading(false);
+    }
+  }
+
+  function handleClose() {
+    router.push("/dashboard");
+  }
+
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-4 py-8">
+      {/* Top bar: Close + Revert */}
+      <div className="mb-4 flex w-full max-w-xs items-center justify-between">
+        <button
+          type="button"
+          className="flex items-center gap-1.5 text-sm text-coven-text-muted transition hover:text-coven-text"
+          onClick={handleClose}
+        >
+          <X className="h-4 w-4" />
+          {t("score.close")}
+        </button>
+        {step !== "results" && (
+          <button
+            type="button"
+            className="flex items-center gap-1.5 text-sm text-red-400/70 transition hover:text-red-400"
+            onClick={() => setShowRevertConfirm(true)}
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            {t("score.revert")}
+          </button>
+        )}
+      </div>
+
+      {/* Revert confirmation */}
+      {showRevertConfirm && (
+        <div className="mb-6 w-full max-w-xs rounded-xl border border-red-400/30 bg-red-400/5 p-4">
+          <p className="mb-3 text-sm text-coven-text">
+            {t("score.revert_confirm")}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowRevertConfirm(false)}
+              className="flex-1"
+            >
+              Avbryt
+            </Button>
+            <Button
+              size="sm"
+              disabled={revertLoading}
+              onClick={handleRevert}
+              className="flex-1 bg-red-500 text-white hover:bg-red-600"
+            >
+              {revertLoading ? t("score.reverting") : t("score.revert")}
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Concert info header */}
       <div className="mb-8 text-center">
         <h1 className="text-2xl font-bold text-coven-text">{concert.band_name}</h1>
@@ -398,7 +534,7 @@ export function ScoreFlow({ concert }: { concert: Concert }) {
             onClick={() => setStep("score-main")}
             className="w-full max-w-xs"
           >
-            Neste
+            {t("score.next")}
           </Button>
         </div>
       )}

@@ -18,7 +18,7 @@ const nb: Record<string, string> = {
   "login.password_required": "Passord er påkrevd",
   "login.invalid_credentials": "Feil innlogging",
   "login.signing_in": "Logger inn...",
-  "login.sign_in_button": "Logg inn mitt dumme fjes",
+  "login.sign_in_button": "Ta meg til Alteret",
   "login.hint": "Logg inn med delt brukernavn.",
   "login.email_label": "E-post",
   "login.password_label": "Passord",
@@ -26,7 +26,7 @@ const nb: Record<string, string> = {
   // Sidebar / user
   "auth.signed_in": "Innlogget",
   "auth.sign_out": "Logg ut",
-  "auth.sign_out_full": "Logg meg ut av Alteret",
+  "auth.sign_out_full": "Ta meg ut av Alteret",
 
   // Mobile nav
   "mobile.open_menu": "Åpne meny",
@@ -223,6 +223,14 @@ const nb: Record<string, string> = {
   "score.done": "Ferdig",
   "score.already_scored": "Du har allerede scoret denne konserten",
   "score.already_scored_desc": "Vent på at de andre skal bli ferdige.",
+  "score.close": "Lukk",
+  "score.revert": "Slett alle scores",
+  "score.revert_desc": "Nullstiller scores for alle tre medlemmer",
+  "score.revert_confirm": "Er du sikker? Alle scores for denne konserten slettes.",
+  "score.reverting": "Sletter...",
+  "score.thank_you_title": "Takk, din møkkamann!",
+  "score.thank_you_desc": "Scorene er levert. Booker avslører resultatet når alle er klare.",
+  "score.next": "Neste",
 };
 
 export function t(key: string): string {

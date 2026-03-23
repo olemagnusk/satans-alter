@@ -272,7 +272,7 @@ async function main() {
         attendees, stand_ins, date, venue,
         score_main_andreas, score_main_dennis, score_main_magnus,
         score_support_andreas, score_support_dennis, score_support_magnus,
-        note, created_by, genre
+        note, created_by, genre, scores_revealed
       ) VALUES (
         ${c.band_name},
         ${(c as any).support_band_1 ?? null},
@@ -290,7 +290,8 @@ async function main() {
         ${(c as any).score_support_magnus ?? null},
         ${(c as any).note ?? null},
         ${"sa"},
-        ${(c as any).genre ?? null}
+        ${(c as any).genre ?? null},
+        ${((c as any).score_main_andreas != null || (c as any).score_main_dennis != null || (c as any).score_main_magnus != null)}
       )
     `;
     console.log(`  ✓ ${c.band_name}`);
