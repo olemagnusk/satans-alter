@@ -44,9 +44,9 @@ export function GenreExpandableList({ genres, previewCount = 5, emptyMessage = "
                 className="flex w-full items-center justify-between gap-2"
                 onClick={() => setExpanded(isOpen ? null : g.genre)}
               >
-                <div className="flex items-baseline gap-2">
+                <div className="flex min-w-0 items-baseline gap-2">
                   <span className="shrink-0 text-xs tabular-nums text-coven-text-muted">{i + 1}.</span>
-                  <span className="text-sm text-coven-text">{g.genre}</span>
+                  <span className="truncate text-sm text-coven-text">{g.genre}</span>
                   <span className="shrink-0 text-xs text-coven-text-muted">
                     ({g.count} {concertCountSuffix(g.count)})
                   </span>
