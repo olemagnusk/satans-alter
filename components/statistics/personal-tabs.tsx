@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ExpandableList } from "@/components/statistics/expandable-list";
+import { GenreExpandableList } from "@/components/statistics/genre-expandable-list";
 import { ScoreDistributionChart } from "@/components/statistics/score-distribution";
 import { t } from "@/lib/i18n";
 
@@ -12,7 +13,7 @@ type MemberStats = {
   avgMain: number | null;
   avgSupport: number | null;
   topVenues: { venue: string; average: number; count: number }[];
-  topGenres: { genre: string; average: number; count: number }[];
+  topGenres: { genre: string; average: number; count: number; bands: { band: string; score: number }[] }[];
   topBands: { band: string; score: number }[];
   scoreDistribution: { score: number; count: number; bands: string[] }[];
 };
@@ -88,12 +89,8 @@ export function PersonalTabs({ stats }: { stats: MemberStats[] }) {
                 <CardTitle>{member.nickname}: Topp sjangere</CardTitle>
               </CardHeader>
               <CardContent>
-                <ExpandableList
-                  items={member.topGenres.map((g) => ({
-                    label: g.genre,
-                    value: g.average.toFixed(1),
-                    sub: `${g.count} ${concertCountSuffix(g.count)}`,
-                  }))}
+                <GenreExpandableList
+                  genres={member.topGenres}
                   emptyMessage={t("stats_personal.no_data")}
                 />
               </CardContent>

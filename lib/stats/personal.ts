@@ -61,21 +61,23 @@ export function getPersonalTopGenre(
   concerts: Concert[],
   dbName: string,
   limit?: number
-): { genre: string; average: number; count: number }[] {
+): { genre: string; average: number; count: number; bands: { band: string; score: number }[] }[] {
   const key = mainKey(dbName);
-  const genreScores = new Map<string, { total: number; count: number }>();
+  const genreScores = new Map<string, { total: number; count: number; bands: { band: string; score: number }[] }>();
   for (const c of concerts) {
     if (!c.genre || !c.scores_revealed || c[key] == null) continue;
-    const current = genreScores.get(c.genre) ?? { total: 0, count: 0 };
+    const current = genreScores.get(c.genre) ?? { total: 0, count: 0, bands: [] };
     current.total += c[key] as number;
     current.count += 1;
+    current.bands.push({ band: c.band_name, score: c[key] as number });
     genreScores.set(c.genre, current);
   }
   const sorted = Array.from(genreScores.entries())
-    .map(([genre, { total, count }]) => ({
+    .map(([genre, { total, count, bands }]) => ({
       genre,
       average: total / count,
       count,
+      bands: bands.sort((a, b) => b.score - a.score),
     }))
     .sort((a, b) => b.average - a.average);
   return limit ? sorted.slice(0, limit) : sorted;
