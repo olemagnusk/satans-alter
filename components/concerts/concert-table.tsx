@@ -626,10 +626,14 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     )}
                     {isVisible("support_score") && (
                       <TableCell>
-                        <ScoreDisplay
-                          scores={memberScores(concert, "support")}
-                          expanded={expanded}
-                        />
+                        {concert.support_band_1 || concert.support_band_2 ? (
+                          <ScoreDisplay
+                            scores={memberScores(concert, "support")}
+                            expanded={expanded}
+                          />
+                        ) : (
+                          <span className="text-xs text-coven-text-muted">–</span>
+                        )}
                       </TableCell>
                     )}
                     {isVisible("attendees") && (
@@ -660,13 +664,24 @@ export function ConcertTable({ concerts }: ConcertTableProps) {
                     )}
                     {isVisible("standins") && (
                       <TableCell>
-                        {concert.stand_ins?.length
-                          ? concert.stand_ins.join(", ")
-                          : "–"}
+                        {concert.stand_ins?.length ? (
+                          <div className="flex flex-wrap gap-1">
+                            {concert.stand_ins.map((name) => (
+                              <span
+                                key={name}
+                                className="inline-flex rounded-full bg-coven-border px-2 py-0.5 text-xs font-medium text-coven-text-soft"
+                              >
+                                {name}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          "–"
+                        )}
                       </TableCell>
                     )}
                     {isVisible("genre") && (
-                      <TableCell>
+                      <TableCell className="whitespace-nowrap text-xs sm:text-sm">
                         {concert.genre || "–"}
                       </TableCell>
                     )}

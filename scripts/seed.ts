@@ -73,7 +73,8 @@ const CONCERTS = [
     attendees: ["Pils", "Djen"],
     stand_ins: ["Endre"],
     score_main_andreas: 1, score_main_dennis: 2,
-    note: "Endre dekker for Krem. Looser: 4, LK: 3",
+    score_support_andreas: 1, score_support_dennis: 2,
+    note: "Endre dekker for Krem. Looser: 4, LK: 3. Endre: 4 og 3.",
   },
   {
     band_name: "Black Tusk",
