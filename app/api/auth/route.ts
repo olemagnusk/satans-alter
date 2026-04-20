@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { findUserByEmail } from "@/lib/users";
 
-const FAKE_EMAIL = "sa";
-const FAKE_PASSWORD = "sa";
 const COOKIE_NAME = "sa_session";
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
 
-  if (email !== FAKE_EMAIL || password !== FAKE_PASSWORD) {
+  const user = findUserByEmail(email ?? "");
+  if (!user || user.password !== password) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, "authenticated", {
+  cookieStore.set(COOKIE_NAME, user.email.toLowerCase(), {
     httpOnly: true,
     path: "/",
     sameSite: "lax",

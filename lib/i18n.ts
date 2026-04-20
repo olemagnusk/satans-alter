@@ -19,7 +19,7 @@ const nb: Record<string, string> = {
   "login.invalid_credentials": "Feil innlogging",
   "login.signing_in": "Logger inn...",
   "login.sign_in_button": "Ta meg til Alteret",
-  "login.hint": "Logg inn med delt brukernavn.",
+  "login.hint": "Logg inn med din e-post.",
   "login.email_label": "E-post",
   "login.password_label": "Passord",
 
@@ -174,8 +174,7 @@ const nb: Record<string, string> = {
   "nav.head_to_head": "Stats: Head to head",
   "nav.alterets_bud": "Alterets Bud",
   "stats_h2h.title": "Stats: Head to head",
-  "stats_h2h.strictest": "Strengeste scorer",
-  "stats_h2h.kindest": "Snilleste scorer",
+  "stats_h2h.strictest": "Snilleste/ strengeste scorer",
   "stats_h2h.most_disagreed": "Mest uenige",
   "stats_h2h.avg_diff": "snitt diff",
   "stats_h2h.concerts_count_singular": "konsert",
